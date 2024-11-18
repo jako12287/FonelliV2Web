@@ -1,0 +1,127 @@
+/* Poppins Regular */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Poppins Medium */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Medium.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Poppins Semibold */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Poppins Bold */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Bold.ttf") format("truetypetruetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Poopins ExtraBold */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* GothamLight */
+@font-face {
+  font-family: "GothamLight";
+  src: url("../assets/fonts/GothamLight.otf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+/* CormorantGaramond-SemiBold */
+@font-face {
+  font-family: "CormorantGaramond";
+  src: url("../assets/fonts/CormorantGaramond-SemiBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+/* CormorantGaramond-SemiBold */
+@font-face {
+  font-family: "MeieScriptRegular";
+  src: url("../assets/fonts/MeieScript-Regular.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+:root {
+  --primary-color: #23A4CC;
+  --secondary-color: #183E6F;
+  --white-color: #ffffff;
+  --black-color:#000;
+  --yellow-color:#FFDE59;
+  --dark-yellow-color:#FFBD59;
+  --green-color:#7ED957;
+  --blue-color-title:#01A3CB;
+  --blue-color-bg:#0A6CB7;
+  --error-color: #ff002b;
+  background-color: var(--white-color);
+  color: var(--black-color);
+  user-select: none;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  width: 100%;
+  max-width: 1728px;
+}
+
+a {
+  text-decoration: none;
+}
+
+main{
+  position: relative;
+}
+
+button {
+  border: none;
+  height: 2.4rem;
+  background-color: transparent;
+  cursor: pointer;
+}
