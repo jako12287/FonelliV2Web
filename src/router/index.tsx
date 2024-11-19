@@ -6,6 +6,7 @@ const Login = lazy(() => import("../views/Login"));
 const Home = lazy(() => import("../views/Home"));
 const OrderDownload = lazy(() => import("../views/OrderDownload"));
 const OrderManagement = lazy(() => import("../views/OrderManagement"));
+const CreateUser = lazy(() => import("../views/CreateUser"));
 const CustomerRegistration = lazy(
   () => import("../views/CustomerRegistration")
 );
@@ -57,6 +58,15 @@ const Router: RouteObject[] = [
     element: (
       <Layout>
         <CustomerRegistration />
+      </Layout>
+    ),
+  },
+  {
+    id: "create-user",
+    path: "/create-user",
+    element: (
+      <Layout>
+        <CreateUser />
       </Layout>
     ),
   },

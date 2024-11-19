@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 interface PropsComponent {
   text: string;
   route: string;
+  type?: string;
 }
-const CustomButtonNavigate: FC<PropsComponent> = ({ text, route }) => {
+const CustomButtonNavigate: FC<PropsComponent> = ({ text, route, type = "default" }) => {
   const navigation = useNavigate();
   return (
-    <div className={styles.container} onClick={() => navigation(route)}>
-      <div className={styles.textLabelContainer}>{text}</div>
+    <div className={type === "default" ? styles.container : styles.containerEspecial} onClick={() => navigation(route)}>
+      <div className={type === "default" ? styles.textLabelContainer : styles.textLabelContainerSpecial}>{text}</div>
       <div className={styles.containerIcon}>
         <div className={styles.circle}>
           <img src={arrowRight} width={20} height={20} />
