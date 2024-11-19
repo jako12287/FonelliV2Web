@@ -1,0 +1,13 @@
+.container{
+}
+
+.textDate{
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 3rem;
+    margin-top: 2rem;
+}
+
