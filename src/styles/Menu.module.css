@@ -1,0 +1,44 @@
+.container{
+    width: 100%;
+    min-height: 99.5vh;
+    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.containerImage{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin-top: 3rem;
+
+}
+
+.image{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.textNameUSer{
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.containerBtnNavigation{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem 1rem 0 1rem;
+
+}

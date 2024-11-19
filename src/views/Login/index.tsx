@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { PropsForm } from "../../types";
 import CustomButton from "../../components/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   email: yup
@@ -14,6 +15,7 @@ const schema = yup.object().shape({
   password: yup.string().required("El nombre es obligatorio"),
 });
 const Login = () => {
+  const navigation = useNavigate();
   const {
     handleSubmit,
     control,
@@ -21,7 +23,9 @@ const Login = () => {
   } = useForm({ mode: "onChange", resolver: yupResolver(schema) });
 
   const onSubmit: SubmitHandler<PropsForm> = (data) => {
+    
     console.log(data);
+    navigation("/home");
   };
   return (
     <section className={style.container}>
@@ -51,11 +55,10 @@ const Login = () => {
             />
           </div>
           <div className={style.containerTextError}>
-            
             {errors.email && (
               <p className={style.textError}>{errors.email.message}</p>
             )}
-            </div>
+          </div>
 
           <div className={style.group}>
             <label className={style.containerLabel} htmlFor="name">
@@ -77,11 +80,11 @@ const Login = () => {
               )}
             />
           </div>
-            {errors.password && (
-              <p className={style.textError}>{errors.password.message}</p>
-            )}
+          {errors.password && (
+            <p className={style.textError}>{errors.password.message}</p>
+          )}
 
-          <CustomButton text="Ingresar"/>
+          <CustomButton text="Ingresar" />
         </form>
       </div>
     </section>

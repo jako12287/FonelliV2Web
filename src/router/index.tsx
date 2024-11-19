@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import { lazy } from "react";
+import Layout from "../layout";
 // eslint-disable-next-line react-refresh/only-export-components
 const Login = lazy(() => import("../views/Login"));
 const Home = lazy(() => import("../views/Home"));
@@ -25,23 +26,39 @@ const Router: RouteObject[] = [
   },
   {
     id: "home",
-    path: "/",
-    element: <Home />,
+    path: "/home",
+    element: (
+      <Layout>
+        <Home />
+      </Layout>
+    ),
   },
   {
     id: "order-download",
     path: "/order-download",
-    element: <OrderDownload />,
+    element: (
+      <Layout>
+        <OrderDownload />
+      </Layout>
+    ),
   },
   {
     id: "order-management",
     path: "/order-management",
-    element: <OrderManagement />,
+    element: (
+      <Layout>
+        <OrderManagement />
+      </Layout>
+    ),
   },
   {
     id: "customer-registration",
     path: "/customer-registration",
-    element: <CustomerRegistration />,
+    element: (
+      <Layout>
+        <CustomerRegistration />
+      </Layout>
+    ),
   },
   {
     id: "notFound",

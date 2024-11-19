@@ -1,0 +1,14 @@
+.container{
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+.sectionMenu{
+    display: flex;
+    width: 20rem;
+
+}
+
+.sectionContent{
+    flex-grow: 1;
+}
