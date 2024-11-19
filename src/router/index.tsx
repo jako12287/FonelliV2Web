@@ -71,6 +71,15 @@ const Router: RouteObject[] = [
     ),
   },
   {
+    id: "edit-user",
+    path: "/edit-user/:_id",
+    element: (
+      <Layout>
+        <CreateUser />
+      </Layout>
+    ),
+  },
+  {
     id: "notFound",
     path: "*",
     element: <NotFound />,

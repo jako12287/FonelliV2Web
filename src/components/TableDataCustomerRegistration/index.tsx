@@ -1,6 +1,7 @@
 import styles from "../../styles/TableDataCustomerRegistration.module.css";
 import IconEdit from "../../assets/icons/edit.png";
 import IconTrash from "../../assets/icons/trash.png";
+import { useNavigate } from "react-router-dom";
 
 interface fakeDataProps {
   _id: string;
@@ -26,6 +27,7 @@ const fakeData: fakeDataProps[] = [
   },
 ];
 const TableData = () => {
+  const navigator = useNavigate();
   return (
     <div className={styles.tableContainer}>
       <table className={styles.customTable}>
@@ -41,12 +43,12 @@ const TableData = () => {
         <tbody>
           {fakeData.map((item) => (
             <tr key={item._id}>
-              
               <td>{item._id}</td>
               <td>{item.password}</td>
               <td>{item.type}</td>
               <td>
-              <img
+                <img
+                  onClick={() => navigator("/edit-user/1234567")}
                   src={IconEdit}
                   width={60}
                   height={60}
