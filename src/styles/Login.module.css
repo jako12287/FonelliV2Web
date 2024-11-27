@@ -66,6 +66,12 @@
   margin-top: 0.5rem;
 }
 
+.textChange{
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
 @media (max-width: 1055px) {
   .sectionForm {
     padding: 2rem;

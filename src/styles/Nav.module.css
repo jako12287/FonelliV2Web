@@ -31,3 +31,12 @@
     width: 20rem;
     margin-right: 12rem;
 }
+
+.textLogout{
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: right;
+    color: var(--secondary-color);
+    cursor: pointer;
+}

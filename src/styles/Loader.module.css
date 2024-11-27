@@ -1,0 +1,29 @@
+.loaderContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+  }
+  
+  .loader {
+    border: 8px solid #f3f3f3; /* Gris claro */
+    border-top: 8px solid #3498db; /* Azul oscuro */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite; /* Animación de giro */
+  }
+  
+  .loaderText {
+    color: #3498db; /* Azul */
+    font-size: 22px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

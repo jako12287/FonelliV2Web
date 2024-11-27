@@ -3,6 +3,7 @@ import { lazy } from "react";
 import Layout from "../layout";
 // eslint-disable-next-line react-refresh/only-export-components
 const Login = lazy(() => import("../views/Login"));
+const ChangePassword = lazy(() => import("../views/ChangePassword"));
 const Home = lazy(() => import("../views/Home"));
 const OrderDownload = lazy(() => import("../views/OrderDownload"));
 const OrderManagement = lazy(() => import("../views/OrderManagement"));
@@ -24,6 +25,11 @@ const Router: RouteObject[] = [
     id: "login",
     path: "/login",
     element: <Login />,
+  },
+  {
+    id: "changePassword",
+    path: "/changePassword/:_id",
+    element: <ChangePassword />,
   },
   {
     id: "home",

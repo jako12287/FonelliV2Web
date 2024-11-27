@@ -6,12 +6,21 @@ import XlsIcon from "../../assets/icons/xls.png";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomButtonNavigate from "../CustomButtonNavigate";
+import { CustomAlertLogOut } from "../../utils/customAlert";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authReducer";
 const Notification = () => {
   const navigation = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const [isActive, setIsActive] = useState<boolean>(false);
+
+  const handleLogout = ()=>{
+    CustomAlertLogOut(dispatch, logout, navigation )
+  }
   return (
     <nav className={styles.container}>
+      <div className={styles.textLogout} onClick={handleLogout}>Cerrar sesión</div>
       {location.pathname === "/customer-registration" ? (
         <div className={styles.containerBtnUser}>
           <CustomButtonNavigate route="/create-user" text="Agregar Usuario" type="special"/>
