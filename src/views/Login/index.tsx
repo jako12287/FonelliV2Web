@@ -40,21 +40,19 @@ const Login = () => {
     };
     try {
       const result = await loginApi(dataSend);
-      console.log("resulktado login", result)
 
       if (
         result.message === "Revisa las credenciales." ||
         result.message === "Contraseña incorrecta."
       ) {
-        toast("Revisa las credenciales");
+        toast.error("Revisa las credenciales", { duration: 5000 });
         return;
       }
 
       if (result?.user?.type === userType.CUSTOMER) {
-      console.log("ENTRO AL IF")
-
-        toast(
-          "Tu cuenta no tiene acceso. Si crees que esto es un error, por favor contacta a soporte"
+        toast.error(
+          "Tu cuenta no tiene acceso. Si crees que esto es un error, por favor contacta a soporte",
+          { duration: 5000 }
         );
         return;
       }
@@ -72,7 +70,6 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
-    // navigation("/home");
   };
 
   return (

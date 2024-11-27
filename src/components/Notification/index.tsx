@@ -52,13 +52,11 @@ const Notification = () => {
       // Aquí puedes llamar a tu servicio para cargar el archivo
       const response = await registerMassive(file);
       if (response?.errors) {
-        console.log("hay errorers en la carga", response.errors);
         handleErrors(response.errors);
       }
 
-      console.log("Respuesta de carga masiva:", response);
       console.log("Archivo cargado:", file.name);
-      alert("Carga masiva realizada con éxito.");
+      toast.success("Carga masiva realizada con éxito.", { duration: 5000 });
       dispatch(setRefetch(true));
       setShowModal(false); // Cerrar el modal después de la carga
     } catch (error) {

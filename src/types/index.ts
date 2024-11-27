@@ -42,6 +42,7 @@ export enum RoutesApi {
   EDIT_USER = "/changeUser",
   DELETE_USER = "/deleteUser",
   GET_ALL_USERS = "/getAllUser",
+  GET_USER_BY_ID = "/getUserById",
 }
 
 export enum userType {

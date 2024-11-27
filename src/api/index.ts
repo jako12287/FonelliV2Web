@@ -25,7 +25,6 @@ export const loginApi = async ({ email, password }: PropsCredential) => {
         },
       }
     );
-    console.log("Respuesta de la API:", response.data);
 
     return response.data;
   } catch (error: any) {
@@ -48,7 +47,6 @@ export const changePassword = async ({ _id, newPassword }: PropsChangePass) => {
         },
       }
     );
-    console.log("Respuesta de la API change:", response.data);
     return response.data;
   } catch (error: any) {
     console.error(
@@ -65,10 +63,25 @@ export const getAllUser = async () => {
         "Content-Type": "application/json",
       },
     });
-    console.log("Respuesta de la API get:", response.data);
     return response.data;
   } catch (error) {
     console.log("Error en get user: ", error);
+  }
+};
+
+export const getUserById = async (_id: string) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URI}${RoutesApi.GET_USER_BY_ID}/${_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error en get user by id: ", error);
   }
 };
 
@@ -80,7 +93,6 @@ export const deleteUser = async (_id: string) => {
       },
       data: { _id },
     });
-    console.log("Respuesta de la API delete:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error en delete user: ", error);
@@ -100,9 +112,42 @@ export const registerMassive = async (file: File) => {
         },
       }
     );
-    console.log("Respuesta del servidor:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error al realizar la carga masiva:", error);
+  }
+};
+
+export const registerUser = async (data: any) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URI}${RoutesApi.REGISTER_USER}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al registrar el usuario:", error);
+  }
+};
+
+export const editUser = async (data: any) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URI}${RoutesApi.EDIT_USER}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al editar el usuario: ", error);
   }
 };

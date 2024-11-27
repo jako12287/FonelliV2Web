@@ -26,12 +26,12 @@ const CustomerRegistration = () => {
   };
 
   const handleDelete = async (_id: string) => {
-    const userlocal = JSON.parse(localStorage.getItem('@USER') as string)
+    const userlocal = JSON.parse(localStorage.getItem("@USER") as string);
 
-    if(_id === userlocal?._id){
-      return toast.error("No es posible eliminar un usuario que esté en uso",{
-        duration:5000
-      })
+    if (_id === userlocal?._id) {
+      return toast.error("No es posible eliminar un usuario que esté en uso", {
+        duration: 5000,
+      });
     }
     try {
       const isConfirmed = window.confirm(

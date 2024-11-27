@@ -12,14 +12,14 @@ import Loader from "../../components/Loader";
 import CustomButton from "../../components/CustomButton";
 
 const schema = yup.object().shape({
-    password: yup
+  password: yup
     .string()
-    .required('Ingresa la contraseña')
-    .min(7, 'Al menos 7 caracteres'),
+    .required("Ingresa la contraseña")
+    .min(7, "Al menos 7 caracteres"),
   confirmPassword: yup
     .string()
-    .required('Confirma tu contraseña')
-    .oneOf([yup.ref('password')], 'Contraseñas no coinciden'),
+    .required("Confirma tu contraseña")
+    .oneOf([yup.ref("password")], "Contraseñas no coinciden"),
 });
 
 const ChangePassword = () => {
@@ -52,12 +52,16 @@ const ChangePassword = () => {
         reset();
         navigation("/home");
       } else {
-        toast(result?.message || "Error desconocido. Intenta nuevamente.");
+        toast.error(
+          result?.message || "Error desconocido. Intenta nuevamente.",
+          { duration: 5000 }
+        );
       }
       return;
     } catch (error) {
       toast(
-        "Error en el inicio de sesión Por favor, verifica tus credenciales o inténtalo nuevamente"
+        "Error en el inicio de sesión Por favor, verifica tus credenciales o inténtalo nuevamente",
+        { duration: 5000 }
       );
       console.error("Error on login:", error);
     } finally {
@@ -72,10 +76,12 @@ const ChangePassword = () => {
       </div>
       <div className={style.sectionForm}>
         <form onSubmit={handleSubmit(onSubmit)} className={style.containerForm}>
-        <p className={style.textChange}>Por tu seguridad, debes hacer el cambio de tu contraseña</p>
+          <p className={style.textChange}>
+            Por tu seguridad, debes hacer el cambio de tu contraseña
+          </p>
           <div className={style.group}>
             <label className={style.containerLabel} htmlFor="name">
-            Contraseña
+              Contraseña
             </label>
 
             <Controller

@@ -31,7 +31,6 @@ export const { setToken, setUser, setLoading, logoutSuccess } =
   authSlice.actions;
 
 export const login = (result: any) => async (dispatch: any) => {
-  console.log("DATOS DE USER", result);
   try {
     const token = result?.token;
     const user = JSON.stringify(result?.user);

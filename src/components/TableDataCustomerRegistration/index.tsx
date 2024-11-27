@@ -8,6 +8,12 @@ import { DataTableUser, userType } from "../../types";
 const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
   const navigator = useNavigate();
 
+  const sortedData = [...data].sort((a: any, b: any) => {
+    const dateA = new Date(a.createdAt).getTime();
+    const dateB = new Date(b.createdAt).getTime();
+    return dateB - dateA; // Más reciente primero
+  });
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.customTable}>
@@ -21,7 +27,7 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {sortedData.map((item) => (
             <tr key={item.id}>
               <td>
                 {item.id}
