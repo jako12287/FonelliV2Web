@@ -40,11 +40,11 @@ const Login = () => {
     };
     try {
       const result = await loginApi(dataSend);
-      console.log("resulktado login", result.user.type)
+      console.log("resulktado login", result)
 
       if (
-        result?.message === "Revisa las credenciales." ||
-        result?.message === "Contraseña incorrecta."
+        result.message === "Revisa las credenciales." ||
+        result.message === "Contraseña incorrecta."
       ) {
         toast("Revisa las credenciales");
         return;

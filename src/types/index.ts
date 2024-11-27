@@ -8,6 +8,21 @@ export interface PropsFormChangePassword {
   confirmPassword: string;
 }
 
+export type DataPropsUser = {
+  id: string;
+  password: string;
+  type: string;
+  createdAt?: Date;
+  email?: string;
+  orders?: any;
+  verify?: boolean;
+};
+
+export interface DataTableUser {
+  data: DataPropsUser[];
+  handleDelete: (data:string) => void;
+}
+
 export enum StatusProps {
   CAUTGHT = "CAUTGHT",
   REQUIRED = "REQUIRED",
