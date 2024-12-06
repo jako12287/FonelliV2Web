@@ -55,7 +55,6 @@ const Notification = () => {
         handleErrors(response.errors);
       }
 
-      console.log("Archivo cargado:", file.name);
       toast.success("Carga masiva realizada con éxito.", { duration: 5000 });
       dispatch(setRefetch(true));
       setShowModal(false); // Cerrar el modal después de la carga

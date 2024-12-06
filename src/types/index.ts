@@ -20,7 +20,7 @@ export type DataPropsUser = {
 
 export interface DataTableUser {
   data: DataPropsUser[];
-  handleDelete: (data:string) => void;
+  handleDelete: (data: string) => void;
 }
 
 export enum StatusProps {
@@ -40,13 +40,23 @@ export enum RoutesApi {
   REGISTER_USER_MASSIVE = "/registerMasseve",
   CHANGE_PASSWORD = "/changePassword",
   EDIT_USER = "/changeUser",
+  EDIT_STATUS_ADMIN = "/orders/status-admin",
   DELETE_USER = "/deleteUser",
   GET_ALL_USERS = "/getAllUser",
   GET_USER_BY_ID = "/getUserById",
+  GET_ALL_ORDER = "/get_orders",
+  DELETE_ORDER = "/orders",
+  ADD_FOLIO = "/orders/add-folio",
 }
 
 export enum userType {
   CUSTOMER = "CUSTOMER",
   COLLABORATOR = "COLLABORATOR",
   ADMIN = "ADMIN",
+}
+
+export enum stateType {
+  PENDING = "PENDING",
+  CAUGHT = "CAUGHT",
+  DOWNLOAD = "DOWNLOAD",
 }

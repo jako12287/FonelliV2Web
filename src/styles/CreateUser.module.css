@@ -1,45 +1,53 @@
-.container{
+.container {
 }
 
-.title{
-    color: var(--blue-color-title);
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 4rem;
-    margin-left: 10rem;
+.title {
+  color: var(--blue-color-title);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4rem;
+  margin-left: 10rem;
+  font-family: Poppins;
 }
 
-.containerForm{
-    width: 40rem;
-    height: 30rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2rem;
-    padding-right: 4rem;
-    margin-left: 3rem;
-
+.containerForm {
+  width: 40rem;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  padding-right: 4rem;
+  margin-left: 3rem;
 }
 
 .group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
 
-  .customInput{
-    background-color: var(--white-color);
+.customInput {
+  background-color: var(--white-color);
   border: none;
   padding: 0.5rem;
   width: 15rem;
   height: 3rem;
   box-shadow: 3px 3px 5px #000;
   outline: none;
-  }
+  font-family: Poppins;
+}
 
-  .textError {
-    color: var(--error-color);
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
-  }
+.containerLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: Poppins;
+}
+
+.textError {
+  color: var(--error-color);
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  font-family: Poppins;
+}

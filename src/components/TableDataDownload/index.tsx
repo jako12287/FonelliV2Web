@@ -1,39 +1,66 @@
 import styles from "../../styles/TableData.module.css";
-import { StatusProps } from "../../types";
+import { stateType } from "../../types";
 import LogoDownload from "../../assets/icons/download.png";
+import { changeStatusAdmin, getAllOrders } from "../../api";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import { downloadPDF } from "../DownloadPdf";
+import { downloadExcel } from "../DownloadXls";
+("moment/locale/es");
+moment.locale("es");
 
-interface fakeDataProps {
-  _id: string;
-  date: string;
-  piezas: number;
-  status: StatusProps;
-  folio: string;
-}
-
-const fakeData: fakeDataProps[] = [
-  {
-    _id: "001",
-    date: "20-10-2024",
-    piezas: 10,
-    status: StatusProps.PENDING,
-    folio: "1112",
-  },
-  {
-    _id: "002",
-    date: "20-10-2024",
-    piezas: 3,
-    status: StatusProps.PENDING,
-    folio: "1112",
-  },
-  {
-    _id: "003",
-    date: "15-10-2024",
-    piezas: 7,
-    status: StatusProps.PENDING,
-    folio: "1112",
-  },
-];
 const TableData = () => {
+  const formattedDate = (date: any) => {
+    return moment(date).format("DD-MMM-YYYY").toLowerCase();
+  };
+  const [Data, setData] = useState<any>([]);
+  const [refetch, setRefetch] = useState<boolean>(false);
+
+  const getAllOrder = async () => {
+    try {
+      const response = await getAllOrders();
+      if (response) {
+        setData(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (refetch) {
+      getAllOrder();
+      setRefetch(false);
+    }
+  }, [refetch]);
+
+  useEffect(() => {
+    getAllOrder();
+  }, []);
+
+  const handleDownloadXls = async (item: any) => {
+    downloadExcel(item);
+    if (item?.statusAdmin === stateType.PENDING) {
+      try {
+        await changeStatusAdmin(item?.id, stateType.DOWNLOAD);
+        setRefetch(true);
+      } catch (error) {
+        console.log("error downloading", error);
+      }
+    }
+  };
+
+  const handleDownloadPdf = async (item: any) => {
+    downloadPDF(item);
+    if (item?.statusAdmin === stateType.PENDING) {
+      try {
+        await changeStatusAdmin(item?.id, stateType.DOWNLOAD);
+        setRefetch(true);
+      } catch (error) {
+        console.log("error downloading", error);
+      }
+    }
+  };
   return (
     <div className={styles.tableContainer}>
       <table className={styles.customTable}>
@@ -47,23 +74,42 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {fakeData.map((item) => (
-            <tr key={item._id}>
-              <td>{item.date}</td>
-              <td>{item._id}</td>
-              <td>{item.piezas} piezas</td>
+          {Data.map((item: any) => (
+            <tr key={item?.id}>
+              <td>{formattedDate(item?.createdAt)}</td>
+              <td>{item?.id}</td>
+              <td>{item?.totalPieces} piezas</td>
               <td
                 className={`${
-                  item.status === "PENDING"
+                  item?.statusAdmin === stateType.PENDING
                     ? styles.statusPending
-                    : styles.statusCaptured
+                    : item?.statusAdmin === stateType.CAUGHT
+                    ? styles.statusCaptured
+                    : styles.statusDownload
                 }`}
               >
-                {item.status === "PENDING" ? "PENDIENTE" : "CAPTURADO"}
+                {item?.statusAdmin === stateType.PENDING
+                  ? "PENDIENTE"
+                  : item?.statusAdmin === stateType.CAUGHT
+                  ? "CAPTURADO"
+                  : "DESCARGADO"}
               </td>
-              <td className={styles.cursorPointer}>
+              <td>
                 <img src={LogoDownload} width={25} height={30} />
-                <h5>EXC/PDF</h5>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <h5
+                    className={styles.cursorPointer}
+                    onClick={() => handleDownloadXls(item)}
+                  >
+                    EXC
+                  </h5>
+                  <h5
+                    className={styles.cursorPointer}
+                    onClick={() => handleDownloadPdf(item)}
+                  >
+                    /PDF
+                  </h5>
+                </div>
               </td>
             </tr>
           ))}

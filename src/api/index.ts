@@ -1,8 +1,8 @@
 import axios from "axios";
 import { RoutesApi } from "../types";
 
-const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
-// const BASE_URI = "http://localhost:3000";
+// const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
+const BASE_URI = "http://localhost:3000";
 
 type PropsCredential = {
   email: string;
@@ -149,5 +149,73 @@ export const editUser = async (data: any) => {
     return response.data;
   } catch (error) {
     console.error("Error al editar el usuario: ", error);
+  }
+};
+
+export const getAllOrders = async () => {
+  try {
+    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_ALL_ORDER}`);
+    return response.data.orders; // Devolver las órdenes
+  } catch (error) {
+    console.error("Error al obtener las órdenes:", error);
+    throw new Error("No se pudieron obtener las órdenes");
+  }
+};
+
+export const changeStatusAdmin = async (
+  orderId: string,
+  statusAdmin: string
+) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URI}${RoutesApi.EDIT_STATUS_ADMIN}/${orderId}`,
+      { statusAdmin }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error al actualizar statusAdmin:",
+      error.response?.data || error.message
+    );
+    throw new Error("No se pudo actualizar el statusAdmin.");
+  }
+};
+
+export const deleteOrder = async (orderId: string) => {
+  try {
+    const response = await axios.delete(
+      `${BASE_URI}${RoutesApi.DELETE_ORDER}/${orderId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message || error.message || "Error desconocido";
+
+    console.error("Error al eliminar la orden:", errorMessage);
+
+    throw new Error(errorMessage);
+  }
+};
+
+export const addFolio = async (orderId: string, folio: string) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URI}${RoutesApi.ADD_FOLIO}/${orderId}`,
+      { folio },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error al agregar el folio:",
+      error.response?.data || error.message
+    );
+    throw new Error("No se pudo agregar el folio.");
   }
 };

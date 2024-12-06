@@ -48,7 +48,6 @@ export const logout = () => async (dispatch: any) => {
     await localStorage.removeItem("@TOKEN");
     await localStorage.removeItem("@USER");
     dispatch(logoutSuccess());
-    console.log("Logout exitoso");
   } catch (error) {
     console.error("Error during logout:", error);
   }
