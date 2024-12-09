@@ -118,7 +118,7 @@ const Login = () => {
                 <input
                   className={style.customInput}
                   alt="Campo para ingresar tu nombre"
-                  type="password"
+                  type="text"
                   placeholder="Escribe tu nombre completo"
                   {...field}
                 />

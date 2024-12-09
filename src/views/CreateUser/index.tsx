@@ -73,7 +73,7 @@ const CreateUser = () => {
     try {
       const response = await typeRequest;
 
-      if (response.userId) {
+      if (response?.userId) {
         reset();
         toast.success("Usuario creado/editado correctamente.", {
           duration: 3000,
@@ -90,8 +90,9 @@ const CreateUser = () => {
         navigation("/customer-registration");
       }
       dispatch(setRefetch(true));
-    } catch (error) {
-      console.error("Error al crear o editar el usuario:", error);
+    } catch (error:any) {
+      console.log("Error al crear o editar el usuario:", error);
+      // toast.error("")
     } finally {
       setIsLoading(false);
     }

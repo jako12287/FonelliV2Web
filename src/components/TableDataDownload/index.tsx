@@ -89,7 +89,7 @@ const TableData = () => {
                 }`}
               >
                 {item?.statusAdmin === stateType.PENDING
-                  ? "PENDIENTE"
+                  ? "SOLICITADO"
                   : item?.statusAdmin === stateType.CAUGHT
                   ? "CAPTURADO"
                   : "DESCARGADO"}

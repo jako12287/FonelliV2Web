@@ -1,5 +1,6 @@
 import axios from "axios";
 import { RoutesApi } from "../types";
+import toast from "react-hot-toast";
 
 const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
 // const BASE_URI = "http://localhost:3000";
@@ -130,8 +131,9 @@ export const registerUser = async (data: any) => {
       }
     );
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error al registrar el usuario:", error);
+    toast.error(error?.response?.data?.message)
   }
 };
 

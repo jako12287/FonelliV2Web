@@ -98,6 +98,11 @@ const TableData = () => {
   const onSubmitFolio = async (id: string) => {
     const folioValue = folios[id];
 
+    if (!folioValue || folioValue.length < 6 || folioValue.length > 15) {
+      alert("El folio debe tener entre 6 y 15 dígitos.");
+      return; // Detener la ejecución si no cumple la validación
+    }
+
     try {
       // Llamar a la función addFolio para enviar el folio al backend
       const result = await addFolio(id, folioValue);
@@ -153,7 +158,7 @@ const TableData = () => {
                 }`}
               >
                 {item?.statusAdmin === stateType.PENDING
-                  ? "PENDIENTE"
+                  ? "SOLICITADO"
                   : item?.statusAdmin === stateType.CAUGHT
                   ? "CAPTURADO"
                   : "DESCARGADO"}
@@ -164,12 +169,16 @@ const TableData = () => {
                 ) : (
                   <div>
                     <input
-                      type="text"
+                      type="number"
                       value={folios[item?.id] || ""}
                       onChange={(e) =>
                         handleFolioChange(item?.id, e.target.value)
                       }
-                      className="inputFolio"
+                      min={6} // 6 dígitos mínimos
+                      max={15} // 15 dígitos máximos
+                      // className="inputFolio"
+                      style={{width:"100px"}}
+
                     />
                     <button onClick={() => onSubmitFolio(item?.id)}>
                       Guardar
