@@ -3,6 +3,7 @@ import { getMessaging, getToken } from "firebase/messaging";
 import { saveTokenToDatabase } from ".";
 
 export const vapidKey = import.meta.env.VITE_vapidKey;
+console.log("TCL: vapidKey", vapidKey)
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -14,7 +15,7 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
 export const requestPermission = async (userId: string) => {
