@@ -3,7 +3,7 @@ import { RoutesApi } from "../types";
 import toast from "react-hot-toast";
 
 const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
-// const BASE_URI = "http://localhost:3000";
+//const BASE_URI = "http://localhost:3000";
 
 type PropsCredential = {
   email: string;
@@ -131,9 +131,9 @@ export const registerUser = async (data: any) => {
       }
     );
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Error al registrar el usuario:", error);
-    toast.error(error?.response?.data?.message)
+    toast.error(error?.response?.data?.message);
   }
 };
 
@@ -219,5 +219,33 @@ export const addFolio = async (orderId: string, folio: string) => {
       error.response?.data || error.message
     );
     throw new Error("No se pudo agregar el folio.");
+  }
+};
+
+export const saveTokenToDatabase = async (userId: any, token: any) => {
+  try {
+    // Verificar que el token y el userId no sean vacíos
+    if (!userId || !token) {
+      console.error("El 'userId' y 'token' son necesarios");
+      return;
+    }
+
+    // Hacer la solicitud POST al backend
+    const response = await axios.post(
+      `${BASE_URI}${RoutesApi.TOKEN_NOTIFICATION}`,
+      {
+        userId,
+        token,
+      }
+    );
+
+    // Respuesta exitosa
+    if (response.status === 200) {
+      console.log("Token guardado exitosamente:", response.data);
+    } else {
+      console.error("Error al guardar el token:", response.data.message);
+    }
+  } catch (error) {
+    console.error("Error al enviar el token al backend:", error);
   }
 };
