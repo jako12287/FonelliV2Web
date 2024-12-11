@@ -223,6 +223,7 @@ export const addFolio = async (orderId: string, folio: string) => {
 };
 
 export const saveTokenToDatabase = async (userId: any, token: any) => {
+  console.log("uri para token notificacion", `${BASE_URI}${RoutesApi.TOKEN_NOTIFICATION}`)
   try {
     // Verificar que el token y el userId no sean vacíos
     if (!userId || !token) {
