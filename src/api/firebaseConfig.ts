@@ -3,7 +3,7 @@ import { getMessaging, getToken } from "firebase/messaging";
 import { saveTokenToDatabase } from ".";
 
 export const vapidKey = import.meta.env.VITE_vapidKey;
-console.log("TCL: vapidKey", vapidKey)
+console.log("TCL: vapidKey", vapidKey);
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -19,14 +19,23 @@ export const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
 export const requestPermission = async (userId: string) => {
+  console.log("dentro de permiso");
+
   try {
     const response = await Notification.requestPermission();
     console.log("TCL: requestPermission -> response", response);
     if (response === "granted") {
       console.log("Permission granted!");
+      console.log("aca va pedir el token de permiso");
+
       const token = await getToken(messaging, { vapidKey });
+      console.log("despues de pedir el token de permiso");
+
       if (token) {
+        console.log("antes del servicio para guardar el token");
+
         await saveTokenToDatabase(userId, token);
+        console.log("despues del servicio para guardar el token");
       }
       console.log("TCL: requestPermission -> token", token);
     } else {
