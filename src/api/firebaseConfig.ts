@@ -26,7 +26,7 @@ export const requestPermission = async (userId: string) => {
       console.log("Permission granted!");
       const token = await getToken(messaging, { vapidKey });
       if (token) {
-        saveTokenToDatabase(userId, token);
+        await saveTokenToDatabase(userId, token);
       }
       console.log("TCL: requestPermission -> token", token);
     } else {

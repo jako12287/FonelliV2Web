@@ -148,9 +148,10 @@ import { PropsForm, userType } from "../../types";
 import CustomButton from "../../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { loginApi, 
+import {
+  loginApi,
   // saveTokenToDatabase
- } from "../../api";
+} from "../../api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/authReducer";
@@ -183,12 +184,12 @@ const Login = () => {
   //   try {
   //     // Solicitar permiso para notificaciones
   //     const permission = await Notification.requestPermission();
-  
+
   //     if (permission === "granted") {
   //       const messaging = getMessaging();
   //       try {
-  //         const currentToken = await getToken(messaging, { 
-  //           vapidKey: "BDScco0DXtm8g8J5fL3d53YTWWPKH5WkWa6Df5GGXq4YmVZj_OPAGrnt_6fqnX1gOMV3sMs--25ctPIOX4n__sQ" 
+  //         const currentToken = await getToken(messaging, {
+  //           vapidKey: "BDScco0DXtm8g8J5fL3d53YTWWPKH5WkWa6Df5GGXq4YmVZj_OPAGrnt_6fqnX1gOMV3sMs--25ctPIOX4n__sQ"
   //         });
   //         console.log("Token de FCM:", currentToken);
   //         if (currentToken) {
@@ -206,11 +207,10 @@ const Login = () => {
   //     console.error("Error al solicitar permiso para notificaciones:", error);
   //   }
   // };
-  
-  
 
   // Función para guardar el token en la base de datos
   const onSubmit: SubmitHandler<PropsForm> = async (data) => {
+    localStorage.clear();
     setIsLoading(true);
     const dataSend = {
       email: data.email.toLowerCase(),
@@ -241,7 +241,7 @@ const Login = () => {
           navigation(`/changePassword/${result?.user?._id}`);
           return;
         }
-        await requestPermission(result?.user?._id)
+        await requestPermission(result?.user?._id);
         // NotificationService.requestPermission()
         // Llamar a la función para obtener el token de FCM
         // getFCMToken(result?.user?._id);
