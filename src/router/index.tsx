@@ -77,11 +77,11 @@ const Router: RouteObject[] = [
     id: "create-user",
     path: "/create-user",
     element: (
-      <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
+      // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
         <Layout>
           <CreateUser />
         </Layout>
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   // Ruta protegida para ADMIN
@@ -89,11 +89,11 @@ const Router: RouteObject[] = [
     id: "edit-user",
     path: "/edit-user/:_id",
     element: (
-      <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
+      // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
         <Layout>
           <CreateUser />
         </Layout>
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   {

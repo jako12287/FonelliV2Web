@@ -241,7 +241,7 @@ const Login = () => {
           navigation(`/changePassword/${result?.user?._id}`);
           return;
         }
-        requestPermission(result?.user?._id)
+        await requestPermission(result?.user?._id)
         // NotificationService.requestPermission()
         // Llamar a la función para obtener el token de FCM
         // getFCMToken(result?.user?._id);
