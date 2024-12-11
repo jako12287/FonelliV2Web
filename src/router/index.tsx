@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import { lazy } from "react";
 import Layout from "../layout";
-import ProtectedRoute from "./protectedRouter";
+// import ProtectedRoute from "./protectedRouter";
 
 // Rol actual del usuario (simulado). Debe venir del almacenamiento local o de tu sistema de autenticación.
 const currentUserRole = localStorage.getItem("@USER")
