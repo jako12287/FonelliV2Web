@@ -41,5 +41,8 @@ export const requestPermission = async (userId: string) => {
     } else {
       console.log("Permission denied!");
     }
-  } catch (error) {}
+  } catch (error) {
+		console.log("TCL: requestPermission -> error", error)
+    
+  }
 };
