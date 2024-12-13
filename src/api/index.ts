@@ -2,8 +2,16 @@ import axios from "axios";
 import { RoutesApi } from "../types";
 import toast from "react-hot-toast";
 
-const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
-//const BASE_URI = "http://localhost:3000";
+const BASE_URI = "https://fonellibackend.onrender.com"; //fonelli client
+// const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
+// const BASE_URI = "http://localhost:3000";
+
+// type PropsRegisterUser = {
+//   email: string;
+//   password: string;
+//   name: string;
+//   type: string;
+// };
 
 type PropsCredential = {
   email: string;
@@ -223,7 +231,10 @@ export const addFolio = async (orderId: string, folio: string) => {
 };
 
 export const saveTokenToDatabase = async (userId: any, token: any) => {
-  console.log("uri para token notificacion", `${BASE_URI}${RoutesApi.TOKEN_NOTIFICATION}`)
+  console.log(
+    "uri para token notificacion",
+    `${BASE_URI}${RoutesApi.TOKEN_NOTIFICATION}`
+  );
   try {
     // Verificar que el token y el userId no sean vacíos
     if (!userId || !token) {

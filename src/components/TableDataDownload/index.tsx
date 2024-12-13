@@ -74,10 +74,11 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {Data.map((item: any) => (
+          {Data.sort((a:any, b:any) => b?.createdAt - a?.createdAt).map((item: any) => (
             <tr key={item?.id}>
+
               <td>{formattedDate(item?.createdAt)}</td>
-              <td>{item?.id}</td>
+              <td>{item?.email || item?.id}</td>
               <td>{item?.totalPieces} piezas</td>
               <td
                 className={`${

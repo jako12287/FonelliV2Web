@@ -41,7 +41,7 @@ export const downloadExcel = (order: any) => {
     if (order.name?.length) {
       data.push({ Campo: "Nombres", Valor: "" });
       order.name.forEach((item: any) => {
-        data.push({ Campo: `  - ${item.name}`, Valor: item.count });
+        data.push({ Campo: `  - ${item.value}`, Valor: item.count });
       });
     }
 

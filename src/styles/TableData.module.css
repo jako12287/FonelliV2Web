@@ -27,16 +27,16 @@
   }
   
   .statusPending {
-    background-color: #0745ff; /* Color para estado pendiente */
-    color: #000;
+    background-color: #F72C5B; /* Color para estado pendiente */
+    color: #fff;
   }
   
   .statusCaptured {
-    background-color: #28a745; /* Color para estado capturado */
+    background-color: #A7D477; /* Color para estado capturado */
     color: #fff;
   }
   .statusDownload {
-    background-color: #FFBD59; /* Color para estado capturado */
+    background-color: #F6EFBD; /* Color para estado capturado */
     color: #fff;
   }
   

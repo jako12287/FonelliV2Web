@@ -8,7 +8,7 @@ const OrderManagement = () => {
   return (
     <div className={styles.container}>
       <div className={styles.textDate}>Fecha {formattedDate}</div>
-      <div>
+      <div className={styles.containerTable}>
         <TableData />
       </div>
     </div>

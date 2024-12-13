@@ -49,7 +49,7 @@ export const downloadPDF = async (order: any) => {
     // Información General
     addSectionHeader("Información General:");
     addNormalText(`Orden ID: ${order.id}`);
-    addNormalText(`Usuario ID: ${order.userId}`);
+    addNormalText(`Usuario ID: ${order?.email || order.id}`);
     addNormalText(`Modelo: ${order.model}`);
     addNormalText(`Kilataje: ${order.caratage}`);
     addNormalText(`Color: ${order.color}`);
@@ -93,7 +93,7 @@ export const downloadPDF = async (order: any) => {
     if (order?.name?.length) {
       addSectionHeader("Nombres:");
       order.name.forEach((item: any) =>
-        addNormalText(`- ${item.name}: ${item.count}`)
+        addNormalText(`- ${item.value}: ${item.count}`)
       );
     }
 

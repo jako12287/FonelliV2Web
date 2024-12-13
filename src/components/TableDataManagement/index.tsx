@@ -9,7 +9,7 @@ import {
   getAllOrders,
 } from "../../api";
 import moment from "moment";
-import { stateType } from "../../types";
+import { stateType, userType } from "../../types";
 import { downloadPDF } from "../DownloadPdf";
 import { downloadExcel } from "../DownloadXls";
 ("moment/locale/es");
@@ -19,6 +19,9 @@ const TableData = () => {
   const formattedDate = (date: any) => {
     return moment(date).format("DD-MMM-YYYY").toLowerCase();
   };
+
+  const currentUser = JSON.parse(localStorage.getItem("@USER") as never)?.type
+	console.log("TCL: TableData -> currentUser",currentUser )
   const [Data, setData] = useState<any>([]);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [folios, setFolios] = useState<{ [key: string]: string }>({});
@@ -124,7 +127,7 @@ const TableData = () => {
       <table className={styles.customTable}>
         <thead>
           <tr>
-            <th></th>
+            {currentUser !== userType.COLLABORATOR && <th></th>}
             <th>Fecha</th>
             <th>ID Cliente</th>
             <th>Piezas</th>
@@ -134,9 +137,9 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {Data.map((item: any) => (
+          {Data.sort((a:any, b:any) => b?.createdAt - a?.createdAt).map((item: any) => (
             <tr key={item?.id}>
-              <td>
+              {currentUser !== userType.COLLABORATOR && <td>
                 <img
                   onClick={() => handleDelete(item.id)}
                   src={IconTrash}
@@ -144,9 +147,9 @@ const TableData = () => {
                   height={60}
                   className={styles.cursorPointer}
                 />
-              </td>
+              </td>}
               <td>{formattedDate(item?.createdAt)}</td>
-              <td>{item.id}</td>
+              <td>{item?.email || item?.id}</td>
               <td>{item?.totalPieces} piezas</td>
               <td
                 className={`${

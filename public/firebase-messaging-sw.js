@@ -27,12 +27,16 @@
 //       body: 'Background Message body.',
 //       icon: ''
 //     };
-  
+
 //     self.registration.showNotification(notificationTitle,
 //       notificationOptions);
 //   });
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js');
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js"
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js"
+);
 
 // Inicializa la app de Firebase
 const firebaseApp = firebase.initializeApp({
@@ -50,13 +54,25 @@ const firebaseApp = firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-  const notificationTitle = 'Background Message Title';
+  console.log("Estado del permiso:", Notification.permission);
+
+  console.log(
+    "[firebase-messaging-sw.js] Received background message ",
+    payload
+  );
+
+  // Usa los datos del payload para obtener el título y el cuerpo de la notificación
+  const notificationTitle = payload.notification.title || "Default Title";
+  const notificationBody = payload.notification.body || "Tienes un nuevo mensaje.";
+
   const notificationOptions = {
-    body: 'Background Message body.',
-    icon: ''
+    body: notificationBody,
+    vibrate: [100, 50, 100],
+    data: { url: "https://miapp.com/mensajes" },
+    icon: "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper-thumbnail.png",
   };
 
+  // Mostrar la notificación con los datos extraídos del payload
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
+

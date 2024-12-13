@@ -11,3 +11,9 @@
     margin-top: 2rem;
 }
 
+.containerTable{
+    max-height: 90vh;
+    margin-top: 2rem;
+    overflow-y: auto;
+    padding: .4rem;
+  }

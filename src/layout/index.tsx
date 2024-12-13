@@ -6,25 +6,27 @@ import { getMessaging, onMessage } from "firebase/messaging";
 // import toast from "react-hot-toast";
 import { app } from "../api/firebaseConfig";
 import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 interface PropsLayout {
   children: ReactNode;
 }
 const Layout: FC<PropsLayout> = ({ children }) => {
-    console.log("Firebase app initialized:", app);
-const messaging = getMessaging();
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload.notification);
-  if(payload?.notification){
+  console.log("Firebase app initialized:", app);
+  const messaging = getMessaging();
+  onMessage(messaging, (payload) => {
+    console.log("Message received. ", payload.notification);
+    if (payload?.notification) {
+      const message = `${payload.notification.title} ${payload.notification.body}`;
+      toast.success(message as string, {
+        position: "top-center",
+        duration: 10000,
+        icon: payload.notification.icon,
+        style:{backgroundColor:"#23A4CC90", color:"#fff", fontFamily:"Poppins", fontWeight:"600"}
+      });
+    }
+  });
 
-    const message = `${payload.notification.title} ${payload.notification.body}`
-    toast.success(message as string, {
-      position: "top-center",
-      duration: 5000,
-  icon:""
-    })
-  }
-  // ...
-});
+  
   return (
     <main className={styles.container}>
       <section className={styles.sectionMenu}>
