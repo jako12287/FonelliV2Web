@@ -27,17 +27,18 @@
   }
   
   .statusPending {
-    background-color: #F72C5B; /* Color para estado pendiente */
-    color: #fff;
+    background-color: #FFB2DB; /* Color para estado pendiente */
+    color: #000;
   }
   
   .statusCaptured {
-    background-color: #A7D477; /* Color para estado capturado */
-    color: #fff;
+    background-color: #0AFFE3; /* Color para estado capturado */
+    color: #000;
   }
+
   .statusDownload {
-    background-color: #F6EFBD; /* Color para estado capturado */
-    color: #fff;
+    background-color: #E79F00; /* Color para estado capturado */
+    color: #000;
   }
   
   .actionButton {
@@ -55,3 +56,13 @@
     cursor: pointer;
   }
   
+  .NoData{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-family: "Poppins";
+    font-weight: 600;
+  }

@@ -17,6 +17,7 @@ const schema = yup.object().shape({
     .string()
     .required("El email es obligatorio")
     .email("Email invalido"),
+  customerNumber: yup.string(),
   password: yup.string().required("El password es obligatorio"),
   type: yup.string().required("El tipo de cuenta es obligatorio"),
 });
@@ -30,6 +31,8 @@ const CreateUser = () => {
     control,
     setValue,
     reset,
+    setError,
+    watch,
     formState: { errors },
   } = useForm({ mode: "onChange", resolver: yupResolver(schema) });
 
@@ -42,6 +45,7 @@ const CreateUser = () => {
         setValue("idCustomer", response.email);
         setValue("password", response.verify ? "" : response.password);
         setValue("type", response.type);
+        setValue("customerNumber", response.customerNumber);
       }
     } catch (error) {
       console.error("Error al cargar el usuario:", error);
@@ -52,22 +56,35 @@ const CreateUser = () => {
     if (_id) {
       handlegetUserById(_id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_id]);
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
-    const dataSend = {
+    const dataSend: any = {
+      type: data.type,
       email: data.idCustomer,
       password: data.password,
-      type: data.type,
     };
 
-    const dataSendEdit = {
+    const dataSendEdit: any = {
       _id,
+      type: data.type,
       email: data.idCustomer,
       password: data.password,
-      type: data.type,
     };
+
+    if (watch("type") === userType.CUSTOMER) {
+      if (!data.customerNumber) {
+        setError("customerNumber", {
+          type: "onChange",
+          message: "Ingresa el número de cliente",
+        });
+        return;
+      }
+      dataSend.customerNumber = data.customerNumber;
+      dataSendEdit.customerNumber = data.customerNumber;
+    }
+    setIsLoading(true);
 
     const typeRequest = _id ? editUser(dataSendEdit) : registerUser(dataSend);
     try {
@@ -90,13 +107,13 @@ const CreateUser = () => {
         navigation("/customer-registration");
       }
       dispatch(setRefetch(true));
-    } catch (error:any) {
+    } catch (error: any) {
       console.log("Error al crear o editar el usuario:", error);
       // toast.error("")
     } finally {
       setIsLoading(false);
     }
-    // navigation("/customer-registration");
+    navigation("/customer-registration");
   };
 
   return (
@@ -107,7 +124,50 @@ const CreateUser = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={style.containerForm}>
         <div className={style.group}>
           <label className={style.containerLabel} htmlFor="name">
-            ID de cliente o correo colaborador
+            Tipo de cuenta
+          </label>
+          <Controller
+            name="type"
+            control={control}
+            defaultValue={userType.COLLABORATOR}
+            render={({ field }) => (
+              <select {...field} className={style.customInput}>
+                <option value={userType.CUSTOMER}>Cliente</option>
+                <option value={userType.COLLABORATOR}>Colaborador</option>
+              </select>
+            )}
+          />
+        </div>
+        {watch("type") === userType.CUSTOMER && (
+          <>
+            <div className={style.group}>
+              <label className={style.containerLabel} htmlFor="name">
+                Número de cliente
+              </label>
+
+              <Controller
+                name="customerNumber"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <input
+                    className={style.customInput}
+                    alt="Campo para numero de cliente"
+                    type="text"
+                    placeholder=""
+                    {...field}
+                  />
+                )}
+              />
+            </div>
+            {errors.customerNumber && (
+              <p className={style.textError}>{errors.customerNumber.message}</p>
+            )}
+          </>
+        )}
+        <div className={style.group}>
+          <label className={style.containerLabel} htmlFor="name">
+            Correo electronico
           </label>
 
           <Controller
@@ -118,7 +178,7 @@ const CreateUser = () => {
               <input
                 className={style.customInput}
                 alt="Campo para ingresar id"
-                type="text"
+                type="email"
                 placeholder=""
                 {...field}
               />
@@ -151,22 +211,7 @@ const CreateUser = () => {
         {errors.password && (
           <p className={style.textError}>{errors.password.message}</p>
         )}
-        <div className={style.group} style={{ marginBottom: "4rem" }}>
-          <label className={style.containerLabel} htmlFor="name">
-            Tipo de cuenta
-          </label>
-          <Controller
-            name="type"
-            control={control}
-            defaultValue={userType.CUSTOMER}
-            render={({ field }) => (
-              <select {...field} className={style.customInput}>
-                <option value={userType.CUSTOMER}>Cliente</option>
-                <option value={userType.COLLABORATOR}>Colaborador</option>
-              </select>
-            )}
-          />
-        </div>
+        <div style={{ marginBottom: "4rem" }} />
         {isLoading ? (
           <Loader />
         ) : (

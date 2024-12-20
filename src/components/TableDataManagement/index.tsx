@@ -12,16 +12,30 @@ import moment from "moment";
 import { stateType, userType } from "../../types";
 import { downloadPDF } from "../DownloadPdf";
 import { downloadExcel } from "../DownloadXls";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setRefetch as setRefetchRealTime } from "../../redux/slices/refecthRealTime";
+// import { listenToRealtimeDatabase } from "../../api/firebaseConfig";
 ("moment/locale/es");
 moment.locale("es");
 
 const TableData = () => {
+  // useEffect(()=>{
+  //   console.log("aca el use effect del realtime")
+  //   listenToRealtimeDatabase()
+  // },[])
+
+  const dispatch = useDispatch();
+  const refetchRealTime = useSelector(
+    (state: RootState) => state.refetchRealTime.refetch
+  );
+
   const formattedDate = (date: any) => {
     return moment(date).format("DD-MMM-YYYY").toLowerCase();
   };
 
-  const currentUser = JSON.parse(localStorage.getItem("@USER") as never)?.type
-	console.log("TCL: TableData -> currentUser",currentUser )
+  const currentUser = JSON.parse(localStorage.getItem("@USER") as never)?.type;
+  console.log("TCL: TableData -> currentUser", currentUser);
   const [Data, setData] = useState<any>([]);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [folios, setFolios] = useState<{ [key: string]: string }>({});
@@ -34,7 +48,10 @@ const TableData = () => {
       });
       setFolios(initialFolios);
       if (response) {
-        setData(response);
+        const dataFilter = response.filter(
+          (el: any) => el.statusAdmin !== stateType.PENDING
+        );
+        setData(dataFilter);
       }
     } catch (error) {
       console.log(error);
@@ -42,11 +59,13 @@ const TableData = () => {
   };
 
   useEffect(() => {
-    if (refetch) {
+    if (refetch || refetchRealTime) {
       getAllOrder();
       setRefetch(false);
+      dispatch(setRefetchRealTime(false));
     }
-  }, [refetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetch, refetchRealTime]);
 
   useEffect(() => {
     getAllOrder();
@@ -122,6 +141,9 @@ const TableData = () => {
     }
   };
 
+  if (!Data?.length) {
+    return <h3 className={styles.NoData}>No hay Datos</h3>;
+  }
   return (
     <div className={styles.tableContainer}>
       <table className={styles.customTable}>
@@ -129,7 +151,7 @@ const TableData = () => {
           <tr>
             {currentUser !== userType.COLLABORATOR && <th></th>}
             <th>Fecha</th>
-            <th>ID Cliente</th>
+            <th>Número de cliente</th>
             <th>Piezas</th>
             <th>Estatus</th>
             <th>Ingresar Folio</th>
@@ -137,77 +159,80 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {Data.sort((a:any, b:any) => b?.createdAt - a?.createdAt).map((item: any) => (
-            <tr key={item?.id}>
-              {currentUser !== userType.COLLABORATOR && <td>
-                <img
-                  onClick={() => handleDelete(item.id)}
-                  src={IconTrash}
-                  width={60}
-                  height={60}
-                  className={styles.cursorPointer}
-                />
-              </td>}
-              <td>{formattedDate(item?.createdAt)}</td>
-              <td>{item?.email || item?.id}</td>
-              <td>{item?.totalPieces} piezas</td>
-              <td
-                className={`${
-                  item?.statusAdmin === stateType.PENDING
-                    ? styles.statusPending
-                    : item?.statusAdmin === stateType.CAUGHT
-                    ? styles.statusCaptured
-                    : styles.statusDownload
-                }`}
-              >
-                {item?.statusAdmin === stateType.PENDING
-                  ? "SOLICITADO"
-                  : item?.statusAdmin === stateType.CAUGHT
-                  ? "CAPTURADO"
-                  : "DESCARGADO"}
-              </td>
-              <td>
-                {item?.folio ? (
-                  item?.folio
-                ) : (
-                  <div>
-                    <input
-                      type="number"
-                      value={folios[item?.id] || ""}
-                      onChange={(e) =>
-                        handleFolioChange(item?.id, e.target.value)
-                      }
-                      min={6} // 6 dígitos mínimos
-                      max={15} // 15 dígitos máximos
-                      // className="inputFolio"
-                      style={{width:"100px"}}
-
+          {Data.sort((a: any, b: any) => b?.createdAt - a?.createdAt).map(
+            (item: any) => (
+              <tr key={item?.id}>
+                {currentUser !== userType.COLLABORATOR && (
+                  <td>
+                    <img
+                      onClick={() => handleDelete(item.id)}
+                      src={IconTrash}
+                      width={60}
+                      height={60}
+                      className={styles.cursorPointer}
                     />
-                    <button onClick={() => onSubmitFolio(item?.id)}>
-                      Guardar
-                    </button>
-                  </div>
+                  </td>
                 )}
-              </td>
-              <td>
-                <img src={LogoDownload} width={25} height={30} />
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <h5
-                    className={styles.cursorPointer}
-                    onClick={() => handleDownloadXls(item)}
-                  >
-                    EXC
-                  </h5>
-                  <h5
-                    className={styles.cursorPointer}
-                    onClick={() => handleDownloadPdf(item)}
-                  >
-                    /PDF
-                  </h5>
-                </div>
-              </td>
-            </tr>
-          ))}
+                <td>{formattedDate(item?.createdAt)}</td>
+                <td>{item.customerNumber || item?.email}</td>
+                <td>{item?.totalPieces} piezas</td>
+                <td
+                  className={`${
+                    item?.statusAdmin === stateType.PENDING
+                      ? styles.statusPending
+                      : item?.statusAdmin === stateType.CAUGHT
+                      ? styles.statusCaptured
+                      : styles.statusDownload
+                  }`}
+                >
+                  {item?.statusAdmin === stateType.PENDING
+                    ? "SOLICITADO"
+                    : item?.statusAdmin === stateType.CAUGHT
+                    ? "CAPTURADO"
+                    : "DESCARGADO"}
+                </td>
+                <td>
+                  {item?.folio ? (
+                    item?.folio
+                  ) : (
+                    <div>
+                      <input
+                        type="number"
+                        value={folios[item?.id] || ""}
+                        onChange={(e) =>
+                          handleFolioChange(item?.id, e.target.value)
+                        }
+                        min={6} // 6 dígitos mínimos
+                        max={15} // 15 dígitos máximos
+                        // className="inputFolio"
+                        style={{ width: "100px" }}
+                      />
+                      <button onClick={() => onSubmitFolio(item?.id)}>
+                        Guardar
+                      </button>
+                    </div>
+                  )}
+                </td>
+                <td>
+                  <img src={LogoDownload} width={25} height={30} />
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <h5
+                      className={styles.cursorPointer}
+                      onClick={() => handleDownloadXls(item)}
+                    >
+                      EXC
+                    </h5>
+                    <h5
+                      className={styles.cursorPointer}
+                      onClick={() => handleDownloadPdf(item)}
+                    >
+                      /PDF
+                    </h5>
+                  </div>
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
     </div>

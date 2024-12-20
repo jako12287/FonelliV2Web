@@ -2,9 +2,9 @@ import axios from "axios";
 import { RoutesApi } from "../types";
 import toast from "react-hot-toast";
 
-const BASE_URI = "https://fonellibackend.onrender.com"; //fonelli client
+// const BASE_URI = "https://fonellibackend.onrender.com"; //fonelli client
 // const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
-// const BASE_URI = "http://localhost:3000";
+const BASE_URI = "http://localhost:3000";
 
 // type PropsRegisterUser = {
 //   email: string;
