@@ -23,14 +23,18 @@ const messaging = firebase.messaging();
 
 // Maneja mensajes en segundo plano
 messaging.onBackgroundMessage((payload) => {
-  console.log("[firebase-messaging-sw.js] Mensaje en segundo plano recibido:", payload);
+  console.log(
+    "[firebase-messaging-sw.js] Mensaje en segundo plano recibido:",
+    payload
+  );
 
   // Datos para la notificación
   const notificationTitle = payload.notification?.title || "Título por defecto";
-  const notificationBody = payload.notification?.body || "Tienes un nuevo mensaje.";
+  const notificationBody =
+    payload.notification?.body || "Tienes un nuevo mensaje.";
   const notificationOptions = {
     body: notificationBody,
-    icon: "/public/icon.png", // Asegúrate de que la ruta sea correcta
+    icon: "/icon.png", // Asegúrate de que la ruta sea correcta
     vibrate: [100, 50, 100],
     data: { url: "https://www.fonellipedidos.com" }, // URL personalizada
   };
@@ -39,4 +43,28 @@ messaging.onBackgroundMessage((payload) => {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+self.addEventListener("notificationclick", (event) => {
+  console.log(
+    "[firebase-messaging-sw.js] Notificación clickeada:",
+    event.notification
+  );
+  event.notification.close();
 
+  const urlToOpen = event.notification.data?.url || "/";
+  event.waitUntil(
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        // Si ya hay una ventana abierta con la URL, enfócala
+        for (const client of clientList) {
+          if (client.url === urlToOpen && "focus" in client) {
+            return client.focus();
+          }
+        }
+        // Si no hay una ventana abierta, ábrela
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen);
+        }
+      })
+  );
+});
