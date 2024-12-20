@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
-import { saveTokenToDatabase } from "."; // Asegúrate de que este método esté bien definido
+import { saveTokenToDatabase } from "./index"; // Asegúrate de que este método esté bien definido
 
 // Variables de entorno
 export const vapidKey = import.meta.env.VITE_vapidKey;
