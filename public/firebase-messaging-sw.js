@@ -34,9 +34,9 @@ messaging.onBackgroundMessage((payload) => {
     payload.notification?.body || "Tienes un nuevo mensaje.";
   const notificationOptions = {
     body: notificationBody,
-    icon: "/icon.png", // Asegúrate de que la ruta sea correcta
-    vibrate: [100, 50, 100],
-    data: { url: "https://www.fonellipedidos.com" }, // URL personalizada
+    icon: payload.data?.icon || "/icon.png",
+    // vibrate: [100, 50, 100],
+    // data: { url: payload.data?.click_action || "https://www.fonellipedidos.com" }, // URL personalizada
   };
 
   // Muestra la notificación al usuario
