@@ -26,9 +26,6 @@ const ChangePassword = () => {
   const navigation = useNavigate();
   const { _id } = useParams();
 
-  if (!_id) {
-    return <div>No found</div>;
-  }
   const {
     handleSubmit,
     control,
@@ -40,7 +37,7 @@ const ChangePassword = () => {
 
   const onSubmit: SubmitHandler<PropsFormChangePassword> = async (data) => {
     setIsLoading(true);
-    const dataSend = {
+    const dataSend: any = {
       _id,
       newPassword: data.password,
     };
@@ -69,6 +66,9 @@ const ChangePassword = () => {
     }
   };
 
+  if (!_id) {
+    return <div>No found</div>;
+  }
   return (
     <section className={style.container}>
       <div className={style.sectionLogo}>

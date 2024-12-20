@@ -86,7 +86,7 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
                   ? item.email || item.id
                   : item.id}
               </td>
-              <td>{item.verify ? "Clave personalizada" : item.password}</td>
+              <td style={{color: item.changePass === 1 ? "#ffb2db" : "#000"}}>{item.verify ? "Clave personalizada" : item.password}</td>
               <td>
                 {item.type === userType.COLLABORATOR
                   ? "Colaborador"
