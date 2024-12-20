@@ -5,10 +5,8 @@ import { Toaster } from "react-hot-toast";
 import Loading from "./components/Loading";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import {
-  // registerOnMessageListener,
-  registerServiceWorker,
-} from "./api/firebaseConfig";
+import { registerServiceWorker } from "../src/api/firebaseConfig";
+
 
 function App() {
   registerServiceWorker();
