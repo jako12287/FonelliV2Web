@@ -35,7 +35,6 @@ const TableData = () => {
   };
 
   const currentUser = JSON.parse(localStorage.getItem("@USER") as never)?.type;
-  console.log("TCL: TableData -> currentUser", currentUser);
   const [Data, setData] = useState<any>([]);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [folios, setFolios] = useState<{ [key: string]: string }>({});

@@ -231,10 +231,6 @@ export const addFolio = async (orderId: string, folio: string) => {
 };
 
 export const saveTokenToDatabase = async (userId: any, token: any) => {
-  console.log(
-    "uri para token notificacion",
-    `${BASE_URI}${RoutesApi.TOKEN_NOTIFICATION}`
-  );
   try {
     // Verificar que el token y el userId no sean vacíos
     if (!userId || !token) {
@@ -253,7 +249,7 @@ export const saveTokenToDatabase = async (userId: any, token: any) => {
 
     // Respuesta exitosa
     if (response.status === 200) {
-      console.log("Token guardado exitosamente:", response.data);
+      console.log("Token guardado exitosamente:");
     } else {
       console.error("Error al guardar el token:", response.data.message);
     }

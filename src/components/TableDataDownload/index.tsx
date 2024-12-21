@@ -29,7 +29,6 @@ const TableData = () => {
     try {
       const response = await getAllOrders();
       if (response) {
-        console.log("TCL: getAllOrder -> response", response);
         const dataFilter = response.filter(
           (el: any) => el.statusAdmin === stateType.PENDING
         );

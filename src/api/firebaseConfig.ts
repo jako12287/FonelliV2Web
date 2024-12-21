@@ -32,7 +32,6 @@ export const requestPermission = async (userId: string) => {
       const token = await getToken(messaging, { vapidKey });
 
       if (token) {
-        console.log("Token obtenido:", token);
         await saveTokenToDatabase(userId, token); // Guarda el token en la base de datos
       } else {
         console.warn("No se pudo obtener el token de notificación");

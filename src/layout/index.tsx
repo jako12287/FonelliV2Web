@@ -26,10 +26,8 @@ const Layout: FC<PropsLayout> = ({ children }) => {
       }
 
       const unsubscribe = onMessage(messaging, (payload) => {
-        console.log("Mensaje recibido:", payload);
 
         if (payload.notification) {
-          console.log("Actualización de la data aquí");
 
           const message = `${payload.notification.title} ${payload.notification.body}`;
           toast.success(message, {

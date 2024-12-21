@@ -21,7 +21,6 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
   });
 
   const handleFilter = (dataOption: any) => {
-    console.log("en el selector", dataOption.target.value);
     if (dataOption.target.value === userType.CUSTOMER) {
       const dataFilter = data.filter(
         (el: any) => el.type === userType.CUSTOMER

@@ -94,7 +94,6 @@ const Login = () => {
         );
         return;
       }
-      console.log("changepass ", result)
       if (result?.token) {
         dispatch(login(result) as never);
         if (!result?.user?.verify && result?.user?._id && result?.user?.changePass === 0) {

@@ -4,11 +4,11 @@ import Layout from "../layout";
 // import ProtectedRoute from "./protectedRouter";
 
 // Rol actual del usuario (simulado). Debe venir del almacenamiento local o de tu sistema de autenticación.
-const currentUserRole = localStorage.getItem("@USER")
-? JSON.parse(localStorage.getItem("@USER") as string).type
-: "CUSTOMER"; // Asignamos "CUSTOMER" como predeterminado para no autenticados.
+// const currentUserRole = localStorage.getItem("@USER")
+//   ? JSON.parse(localStorage.getItem("@USER") as string).type
+//   : "CUSTOMER"; // Asignamos "CUSTOMER" como predeterminado para no autenticados.
 
-console.log("TCL: currentUserRole en la web", currentUserRole)
+// console.log("TCL: currentUserRole en la web", currentUserRole);
 const Login = lazy(() => import("../views/Login"));
 const ChangePassword = lazy(() => import("../views/ChangePassword"));
 const Home = lazy(() => import("../views/Home"));
@@ -78,9 +78,9 @@ const Router: RouteObject[] = [
     path: "/create-user",
     element: (
       // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
-        <Layout>
-          <CreateUser />
-        </Layout>
+      <Layout>
+        <CreateUser />
+      </Layout>
       // </ProtectedRoute>
     ),
   },
@@ -90,9 +90,9 @@ const Router: RouteObject[] = [
     path: "/edit-user/:_id",
     element: (
       // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
-        <Layout>
-          <CreateUser />
-        </Layout>
+      <Layout>
+        <CreateUser />
+      </Layout>
       // </ProtectedRoute>
     ),
   },
