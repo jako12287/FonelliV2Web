@@ -1,4 +1,5 @@
 import { initializeApp, getApps } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getMessaging, getToken } from "firebase/messaging";
 import { saveTokenToDatabase } from "./index"; // Asegúrate de que este método esté bien definido
 
@@ -19,6 +20,7 @@ export const firebaseConfig = {
 export const app = !getApps().length
   ? initializeApp(firebaseConfig)
   : getApps()[0];
+  export const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
 // Función para solicitar permisos de notificación y guardar el token

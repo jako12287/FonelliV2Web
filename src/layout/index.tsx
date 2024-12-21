@@ -13,6 +13,7 @@ interface PropsLayout {
 const Layout: FC<PropsLayout> = ({ children }) => {
   const messaging = getMessaging(app);
   const dispatch = useDispatch();
+
   useEffect(() => {
     let isMounted = true;
 

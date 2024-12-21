@@ -12,6 +12,8 @@ function App() {
   registerServiceWorker();
   // registerOnMessageListener();
 
+
+
   return (
     <Provider store={store}>
       <Toaster />
