@@ -35,6 +35,7 @@ export enum StatusProps {
 
 export enum RoutesApi {
   LOGIN = "/login",
+  LOGOUT = "/logout",
   STATUS = "/testbd",
   REGISTER_USER = "/register",
   REGISTER_USER_MASSIVE = "/registerMasseve",

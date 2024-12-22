@@ -116,6 +116,7 @@ const TableData = () => {
       [id]: value, // Actualizar el folio solo para el ID específico
     }));
   };
+  
   const onSubmitFolio = async (id: string) => {
     const folioValue = folios[id];
 
@@ -127,6 +128,7 @@ const TableData = () => {
     try {
       // Llamar a la función addFolio para enviar el folio al backend
       const result = await addFolio(id, folioValue);
+			console.log("TCL: onSubmitFolio -> result", result)
 
       if (result) {
         alert("Folio agregado exitosamente.");

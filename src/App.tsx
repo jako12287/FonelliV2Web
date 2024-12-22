@@ -7,12 +7,9 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { registerServiceWorker } from "./api/firebaseConfig";
 
-
 function App() {
   registerServiceWorker();
   // registerOnMessageListener();
-
-
 
   return (
     <Provider store={store}>

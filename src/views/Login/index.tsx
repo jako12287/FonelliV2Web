@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/Login.module.css";
 import Logo from "../../assets/images/logoLogin.png";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,36 +39,15 @@ const Login = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Función para obtener el token de FCM
-  // const getFCMToken = async (userId: any) => {
-  //   try {
-  //     // Solicitar permiso para notificaciones
-  //     const permission = await Notification.requestPermission();
+  useEffect(() => {
+    const user = localStorage.getItem("@USER");
+    const tokent = localStorage.getItem("@TOKEN");
+    if (user && tokent) {
+      navigation("/home");
+    }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
-  //     if (permission === "granted") {
-  //       const messaging = getMessaging();
-  //       try {
-  //         const currentToken = await getToken(messaging, {
-  //           vapidKey: "BDScco0DXtm8g8J5fL3d53YTWWPKH5WkWa6Df5GGXq4YmVZj_OPAGrnt_6fqnX1gOMV3sMs--25ctPIOX4n__sQ"
-  //         });
-  //         console.log("Token de FCM:", currentToken);
-  //         if (currentToken) {
-  //           saveTokenToDatabase(userId, currentToken);
-  //         } else {
-  //           console.log("No se pudo obtener el token.");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error al obtener el token:", error);
-  //       }
-  //     } else {
-  //       console.log("Permiso denegado para recibir notificaciones");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al solicitar permiso para notificaciones:", error);
-  //   }
-  // };
-
-  // Función para guardar el token en la base de datos
   const onSubmit: SubmitHandler<PropsForm> = async (data) => {
     localStorage.clear();
     setIsLoading(true);
@@ -96,14 +75,18 @@ const Login = () => {
       }
       if (result?.token) {
         dispatch(login(result) as never);
-        if (!result?.user?.verify && result?.user?._id && result?.user?.changePass === 0) {
+        if (
+          !result?.user?.verify &&
+          result?.user?._id &&
+          result?.user?.changePass === 0
+        ) {
           reset();
           navigation(`/changePassword/${result?.user?._id}`);
           return;
         }
-        console.log("antes de permiso")
+        console.log("antes de permiso");
         await requestPermission(result?.user?._id);
-        console.log("despues de permiso")
+        console.log("despues de permiso");
         // NotificationService.requestPermission()
         // Llamar a la función para obtener el token de FCM
         // getFCMToken(result?.user?._id);

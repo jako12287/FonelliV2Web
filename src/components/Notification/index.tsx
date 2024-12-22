@@ -21,7 +21,7 @@ const Notification = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     CustomAlertLogOut(dispatch, logout, navigation);
   };
 
@@ -111,7 +111,7 @@ const Notification = () => {
               type="file"
               accept=".xlsx, .xls"
               onChange={handleFileChange}
-              style={{fontFamily:"Poppins"}}
+              style={{ fontFamily: "Poppins" }}
               className={stylesModal.inputFile}
             />
             <div className={stylesModal.modalActions}>

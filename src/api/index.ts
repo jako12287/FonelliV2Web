@@ -41,6 +41,10 @@ export const loginApi = async ({ email, password }: PropsCredential) => {
       "Error al realizar login:",
       error.response?.data || error.message
     );
+    console.log("Error al realizar login 2:", error.response?.data?.message);
+    if (error.response?.data?.message === "Ya tienes una sesión activa.") {
+      return toast.error(error.response?.data?.message);
+    }
     return error.response?.data;
   }
 };
@@ -255,5 +259,20 @@ export const saveTokenToDatabase = async (userId: any, token: any) => {
     }
   } catch (error) {
     console.error("Error al enviar el token al backend:", error);
+  }
+};
+
+export const LogoutAll = async (userId: string) => {
+  try {
+    const response = await axios.post(`${BASE_URI}${RoutesApi.LOGOUT}`, {
+      userId,
+    });
+    if (response.status === 200) {
+      console.log("Session cerrada exitosamente");
+    } else {
+      console.error("Error al cerrar session:", response.data.message);
+    }
+  } catch (error) {
+    console.error("Error al cerrar session:", error);
   }
 };
