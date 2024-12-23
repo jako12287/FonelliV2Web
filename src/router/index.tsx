@@ -20,6 +20,23 @@ const CustomerRegistration = lazy(
 );
 const NotFound = lazy(() => import("../views/NoFound"));
 
+interface ProtectedRouteProps {
+  children: JSX.Element;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const token = localStorage.getItem("@TOKEN");
+  const user = localStorage.getItem("@USER");
+
+  // Si no hay token o usuario, redirige al login
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Si hay token y usuario, renderiza el contenido protegido
+  return children;
+};
+
 const Router: RouteObject[] = [
   {
     id: "redirect-to-login",
@@ -34,42 +51,54 @@ const Router: RouteObject[] = [
   {
     id: "changePassword",
     path: "/changePassword/:_id",
-    element: <ChangePassword />,
+    element: (
+      <ProtectedRoute>
+        <ChangePassword />
+      </ProtectedRoute>
+    ),
   },
   {
     id: "home",
     path: "/home",
     element: (
-      <Layout>
-        <Home />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <Home />
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     id: "order-download",
     path: "/order-download",
     element: (
-      <Layout>
-        <OrderDownload />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <OrderDownload />
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     id: "order-management",
     path: "/order-management",
     element: (
-      <Layout>
-        <OrderManagement />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <OrderManagement />
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     id: "customer-registration",
     path: "/customer-registration",
     element: (
-      <Layout>
-        <CustomerRegistration />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <CustomerRegistration />
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   // Ruta protegida para ADMIN
@@ -78,9 +107,12 @@ const Router: RouteObject[] = [
     path: "/create-user",
     element: (
       // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
-      <Layout>
-        <CreateUser />
-      </Layout>
+
+      <ProtectedRoute>
+        <Layout>
+          <CreateUser />
+        </Layout>
+      </ProtectedRoute>
       // </ProtectedRoute>
     ),
   },
@@ -90,9 +122,11 @@ const Router: RouteObject[] = [
     path: "/edit-user/:_id",
     element: (
       // <ProtectedRoute allowedRoles={["ADMIN"]} userRole={currentUserRole}>
-      <Layout>
-        <CreateUser />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <CreateUser />
+        </Layout>
+      </ProtectedRoute>
       // </ProtectedRoute>
     ),
   },
