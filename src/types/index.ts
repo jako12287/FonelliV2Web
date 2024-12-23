@@ -48,7 +48,9 @@ export enum RoutesApi {
   GET_ALL_ORDER = "/get_orders",
   DELETE_ORDER = "/orders",
   ADD_FOLIO = "/orders/add-folio",
-  TOKEN_NOTIFICATION = "/api/save-token"
+  TOKEN_NOTIFICATION = "/api/save-token",
+  GET_NOTIFICATIONS = "/notifications",
+  DELETE_NOTIFICATION = "/notification",
 }
 
 export enum userType {

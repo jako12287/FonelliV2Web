@@ -4,72 +4,100 @@ import bell from "../../assets/icons/bell.png";
 import bellActive from "../../assets/icons/bellActive.png";
 import HomeIcon from "../../assets/icons/home.png";
 import XlsIcon from "../../assets/icons/xls.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomButtonNavigate from "../CustomButtonNavigate";
 import { CustomAlertLogOut } from "../../utils/customAlert";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/authReducer";
-import { registerMassive } from "../../api";
+import { getAllNotify, registerMassive } from "../../api";
 import { setRefetch } from "../../redux/slices/refecthUser";
 import toast from "react-hot-toast";
+import { setOpen } from "../../redux/slices/openModalNotify";
+import { RootState } from "../../redux/store";
+
 const Notification = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
+  const refetchRealTime = useSelector(
+    (state: RootState) => state.refetchRealTime.refetch
+  );
   const location = useLocation();
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [isData, setData] = useState(false);
 
+  // Manejo de logout
   const handleLogout = async () => {
     CustomAlertLogOut(dispatch, logout, navigation);
   };
 
+  // Manejo de cambio de archivo
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
     }
   };
 
-  const handleErrors = (errors: { email: string; message: string }[]) => {
-    errors.forEach((error) => {
-      toast.error(`Email: ${error.email} - ${error.message}`, {
-        duration: 15000,
-      });
-    });
-  };
-
+  // Subida masiva de archivo
   const handleUpload = async () => {
     if (!file) {
       alert("Por favor, selecciona un archivo antes de subirlo.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      // Aquí puedes llamar a tu servicio para cargar el archivo
       const response = await registerMassive(file);
       if (response?.errors) {
-        handleErrors(response.errors);
+        response.errors.forEach((error: { email: string; message: string }) =>
+          toast.error(`Email: ${error.email} - ${error.message}`, {
+            duration: 15000,
+          })
+        );
       }
 
       toast.success("Carga masiva realizada con éxito.", { duration: 5000 });
       dispatch(setRefetch(true));
-      setShowModal(false); // Cerrar el modal después de la carga
+      setShowModal(false);
     } catch (error) {
       console.error("Error al cargar usuarios:", error);
       alert("Hubo un error al intentar cargar los usuarios.");
     }
   };
 
+  // Abrir modal de notificaciones
+  const handleOpenModal = () => {
+    dispatch(setOpen(true));
+  };
+
+  // Obtener todas las notificaciones
+  const getAll = async () => {
+    try {
+      const response = await getAllNotify();
+      setData(response.length > 0);
+    } catch (error) {
+      console.log("Error al traer las notificaciones:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
+
+  useEffect(() => {
+      if (refetchRealTime) {
+        getAll();
+        dispatch(setRefetch(false));
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refetchRealTime]);
+
   return (
     <nav className={styles.container}>
       <div className={styles.textLogout} onClick={handleLogout}>
         Cerrar sesión
       </div>
-      {location.pathname === "/customer-registration" ? (
+      {location.pathname === "/customer-registration" && (
         <div className={styles.containerBtnUser}>
           <CustomButtonNavigate
             route="/create-user"
@@ -77,31 +105,24 @@ const Notification = () => {
             type="special"
           />
         </div>
-      ) : null}
+      )}
       <div
         className={styles.containerImageHome}
         onClick={() => navigation("/home")}
       >
         <img src={HomeIcon} className={styles.image} />
       </div>
-      <div
-        className={styles.containerImage}
-        onClick={() => setIsActive(!isActive)}
-      >
-        {!isActive ? (
-          <img src={bell} className={styles.image} />
-        ) : (
-          <img src={bellActive} className={styles.image} />
-        )}
+      <div className={styles.containerImage} onClick={handleOpenModal}>
+        <img src={isData ? bellActive : bell} className={styles.image} />
       </div>
-      {location.pathname === "/customer-registration" ? (
+      {location.pathname === "/customer-registration" && (
         <div
           className={styles.containerImageHome}
           onClick={() => setShowModal(true)}
         >
           <img src={XlsIcon} className={styles.image} />
         </div>
-      ) : null}
+      )}
 
       {showModal && (
         <div className={stylesModal.modalOverlay}>
@@ -111,14 +132,10 @@ const Notification = () => {
               type="file"
               accept=".xlsx, .xls"
               onChange={handleFileChange}
-              style={{ fontFamily: "Poppins" }}
               className={stylesModal.inputFile}
             />
             <div className={stylesModal.modalActions}>
-              <button
-                onClick={handleUpload}
-                className={stylesModal.uploadButton}
-              >
+              <button onClick={handleUpload} className={stylesModal.uploadButton}>
                 Subir
               </button>
               <button

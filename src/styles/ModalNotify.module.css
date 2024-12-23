@@ -1,0 +1,39 @@
+.container {
+    position: absolute;
+    width:30rem;
+    right: 0;
+    height: 90vh;
+    background-color: #23A4CC99;
+    box-shadow: 1px 1px 30px #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: .5rem;
+    border-radius: 1rem;
+    overflow-y: auto;
+  overflow-x: hidden; 
+
+}
+
+.containerClose{
+    width: 100%;
+    display: flex;
+    font-size: 20px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+.containerClose h5{
+    cursor: pointer;
+}
+
+.textNoData{
+    width: 100%;
+    display: flex;
+    font-size: 20px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-top: 10rem;
+}

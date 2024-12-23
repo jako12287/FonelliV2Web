@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authReducer";
 import refetchReducer from "./slices/refecthUser";
 import refetchRealTiemSlice from "./slices/refecthRealTime"
+import openModalNotify from "./slices/openModalNotify"
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     refetchUser: refetchReducer,
     refetchRealTime: refetchRealTiemSlice, 
+    openModalNotify
   },
 });
 

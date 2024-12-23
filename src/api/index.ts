@@ -276,3 +276,32 @@ export const LogoutAll = async (userId: string) => {
     console.error("Error al cerrar session:", error);
   }
 };
+
+export const getAllNotify = async () => {
+  try {
+    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_NOTIFICATIONS}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data.notifications;
+  } catch (error) {
+    console.log("Error en get notifications: ", error);
+  }
+};
+
+export const deleteNotification = async (notificationId: string) => {
+  try {
+    const response = await axios.delete(
+      `${BASE_URI}${RoutesApi.DELETE_NOTIFICATION}/${notificationId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message || error.message || "Error desconocido";
+
+    console.error("Error al eliminar la notificacion:", errorMessage);
+
+    throw new Error(errorMessage);
+  }
+};

@@ -1,0 +1,42 @@
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+    padding: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+  
+  .header h3 {
+    color: #ff4d4f;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0;
+  }
+  
+  .header h3:hover {
+    text-decoration: underline;
+  }
+  
+  .content h5 {
+    margin: 8px 0;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .content h5 span {
+    color: #555;
+    font-weight: bold;
+  }
+  
