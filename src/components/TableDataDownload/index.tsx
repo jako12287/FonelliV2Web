@@ -97,7 +97,7 @@ const TableData = () => {
             (item: any) => (
               <tr key={item?.id}>
                 <td>{formattedDate(item?.createdAt)}</td>
-                <td>{item.customerNumber || item?.email}</td>
+                <td>{item?.customerNumber}</td>
                 <td>{item?.totalPieces} piezas</td>
                 <td
                   className={`${

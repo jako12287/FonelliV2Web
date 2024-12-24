@@ -2,13 +2,15 @@ import { FC, ReactNode, useEffect } from "react";
 import styles from "../styles/Layout.module.css";
 import Menu from "../components/Menu";
 import Notification from "../components/Notification";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { getMessaging, onMessage } from "firebase/messaging";
 import { app } from "../api/firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setRefetch } from "../redux/slices/refecthRealTime";
 import ModalNotify from "../views/modalNotify";
 import { RootState } from "../redux/store";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface PropsLayout {
   children: ReactNode;
 }
@@ -32,18 +34,23 @@ const Layout: FC<PropsLayout> = ({ children }) => {
 
       const unsubscribe = onMessage(messaging, (payload) => {
         if (payload.notification) {
-          const message = `${payload.notification.title} ${payload.notification.body}`;
+          const message = (
+            <div>
+              <strong>{payload.notification.title}</strong> <br />
+              {payload.notification.body}
+            </div>
+          );
           toast.success(message, {
-            position: "top-center",
-            duration: 10000,
-            icon: payload.notification.icon,
+            position: "top-right", // Ubicación de la notificación
+            autoClose: 10000, // Duración en milisegundos (10 segundos)
             style: {
-              backgroundColor: "#23A4CC90",
-              color: "#fff",
-              fontFamily: "Poppins",
-              fontWeight: "600",
+              backgroundColor: "#23A4CC", // Color de fondo
+              color: "#fff", // Color del texto
+              fontFamily: "Poppins", // Fuente
+              fontWeight: "600", // Peso de la fuente
             },
           });
+
           dispatch(setRefetch(true));
         }
       });
@@ -64,6 +71,7 @@ const Layout: FC<PropsLayout> = ({ children }) => {
     <main className={styles.container}>
       <section className={styles.sectionMenu}>
         <Menu />
+        <ToastContainer />
       </section>
       <section className={styles.sectionContent}>
         <Notification />
