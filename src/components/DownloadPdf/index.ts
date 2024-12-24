@@ -15,7 +15,7 @@ export const downloadPDF = async (order: any) => {
     const normalFontSize = 12;
 
     // Agregar título
-    const title = "Orden de Trabajo Fonelli";
+    const title = "Orden de pedido Fonelli";
     const titleWidth = page.getWidth() / 2 - (title.length * titleFontSize) / 4;
     page.drawText(title, {
       x: titleWidth,
