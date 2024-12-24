@@ -48,20 +48,20 @@ export const downloadPDF = async (order: any) => {
 
     // Información General
     addSectionHeader("Información General:");
-    addNormalText(`Orden ID: ${order.id}`);
-    addNormalText(`Usuario ID: ${order?.email || order.id}`);
-    addNormalText(`Modelo: ${order.model}`);
-    addNormalText(`Kilataje: ${order.caratage}`);
-    addNormalText(`Color: ${order.color}`);
-    addNormalText(`Piedra: ${order.rock}`);
-    addNormalText(
+    if (order.id) addNormalText(`Orden ID: ${order.id}`);
+    if (order?.email || order.id) addNormalText(`Usuario ID: ${order?.email || order.id}`);
+    if (order.model) addNormalText(`Modelo: ${order.model}`);
+    if (order.caratage) addNormalText(`Kilataje: ${order.caratage}`);
+    if (order.color) addNormalText(`Color: ${order.color}`);
+    if (order.rock) addNormalText(`Piedra: ${order.rock}`);
+    if (order.status) addNormalText(
       `Estado: ${
         order.status === stateType.PENDING ? "SOLICITADO" : "CAPTURADO"
       }`
     );
-    addNormalText(`Piezas Totales: ${order.totalPieces}`);
-    addNormalText(`Observaciones: ${order.observations || "Ninguna"}`);
-    addNormalText(`Creado el: ${new Date(order.createdAt).toLocaleString()}`);
+    if (order.totalPieces) addNormalText(`Piezas Totales: ${order.totalPieces}`);
+    if (order.observations) addNormalText(`Observaciones: ${order.observations}`);
+    if (order.createdAt) addNormalText(`Creado el: ${new Date(order.createdAt).toLocaleString()}`);
 
     y -= 10; // Espacio extra
 
@@ -104,7 +104,7 @@ export const downloadPDF = async (order: any) => {
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `Orden_${order.id}.pdf`;
+    link.download = `Orden_${order.id || 'desconocida'}.pdf`;
     link.click();
 
   } catch (error) {
