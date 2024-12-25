@@ -59,7 +59,6 @@ const Layout: FC<PropsLayout> = ({ children }) => {
 
       // Función de limpieza
       return () => {
-        console.log("Limpiando el listener de `onMessage`");
         unsubscribe();
         isMounted = false;
       };

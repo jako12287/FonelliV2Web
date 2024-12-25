@@ -20,7 +20,7 @@ export const firebaseConfig = {
 export const app = !getApps().length
   ? initializeApp(firebaseConfig)
   : getApps()[0];
-  export const analytics = getAnalytics(app);
+export const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
 // Función para solicitar permisos de notificación y guardar el token
@@ -46,17 +46,13 @@ export const requestPermission = async (userId: string) => {
 
 // Configura un único listener para las notificaciones
 
-
 // Registra el Service Worker si no está ya registrado
 export const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     try {
       const registrations = await navigator.serviceWorker.getRegistrations();
       if (registrations.length === 0) {
-        const registration = await navigator.serviceWorker.register(
-          "/firebase-messaging-sw.js"
-        );
-        console.log("Service Worker registrado con éxito:", registration);
+        await navigator.serviceWorker.register("/firebase-messaging-sw.js");
       } else {
         console.log("Service Worker ya estaba registrado");
       }

@@ -1,14 +1,7 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import { lazy } from "react";
 import Layout from "../layout";
-// import ProtectedRoute from "./protectedRouter";
 
-// Rol actual del usuario (simulado). Debe venir del almacenamiento local o de tu sistema de autenticación.
-// const currentUserRole = localStorage.getItem("@USER")
-//   ? JSON.parse(localStorage.getItem("@USER") as string).type
-//   : "CUSTOMER"; // Asignamos "CUSTOMER" como predeterminado para no autenticados.
-
-// console.log("TCL: currentUserRole en la web", currentUserRole);
 const Login = lazy(() => import("../views/Login"));
 const ChangePassword = lazy(() => import("../views/ChangePassword"));
 const Home = lazy(() => import("../views/Home"));

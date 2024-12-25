@@ -52,6 +52,20 @@ const TableData = () => {
     getAllOrder();
   }, []);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        getAllOrder();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   const handleDownloadXls = async (item: any) => {
     downloadExcel(item);
     if (item?.statusAdmin === stateType.PENDING) {

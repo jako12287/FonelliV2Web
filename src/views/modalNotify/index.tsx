@@ -34,7 +34,6 @@ const ModalNotify = () => {
     setIsLoading(true);
     try {
       const response = await getAllNotify();
-      console.log("TCL: getAll -> response", response);
       if (response) {
         setData(response);
       }

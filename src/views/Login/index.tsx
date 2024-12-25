@@ -84,12 +84,8 @@ const Login = () => {
           navigation(`/changePassword/${result?.user?._id}`);
           return;
         }
-        console.log("antes de permiso");
         await requestPermission(result?.user?._id);
-        console.log("despues de permiso");
-        // NotificationService.requestPermission()
-        // Llamar a la función para obtener el token de FCM
-        // getFCMToken(result?.user?._id);
+
         navigation("/home");
       }
     } catch (error) {

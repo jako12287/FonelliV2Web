@@ -20,11 +20,6 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
-  // Customize notification here
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
@@ -35,10 +30,6 @@ messaging.onBackgroundMessage(function (payload) {
 });
 
 self.addEventListener("notificationclick", (event) => {
-  console.log(
-    "[firebase-messaging-sw.js] Notificación clickeada:",
-    event.notification
-  );
   event.notification.close();
 
   const urlToOpen = event.notification.data?.url || "/";

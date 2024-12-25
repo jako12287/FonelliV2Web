@@ -15,16 +15,11 @@ import { downloadExcel } from "../DownloadXls";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setRefetch as setRefetchRealTime } from "../../redux/slices/refecthRealTime";
-// import { listenToRealtimeDatabase } from "../../api/firebaseConfig";
+
 ("moment/locale/es");
 moment.locale("es");
 
 const TableData = () => {
-  // useEffect(()=>{
-  //   console.log("aca el use effect del realtime")
-  //   listenToRealtimeDatabase()
-  // },[])
-
   const dispatch = useDispatch();
   const refetchRealTime = useSelector(
     (state: RootState) => state.refetchRealTime.refetch
@@ -116,19 +111,18 @@ const TableData = () => {
       [id]: value, // Actualizar el folio solo para el ID específico
     }));
   };
-  
+
   const onSubmitFolio = async (id: string) => {
     const folioValue = folios[id];
 
     if (!folioValue || folioValue.length < 6 || folioValue.length > 15) {
       alert("El folio debe tener entre 6 y 15 dígitos.");
-      return; // Detener la ejecución si no cumple la validación
+      return;
     }
 
     try {
       // Llamar a la función addFolio para enviar el folio al backend
       const result = await addFolio(id, folioValue);
-			console.log("TCL: onSubmitFolio -> result", result)
 
       if (result) {
         alert("Folio agregado exitosamente.");
