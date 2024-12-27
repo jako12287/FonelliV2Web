@@ -93,11 +93,11 @@ const ModalNotify = () => {
           Data.sort(
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          ).map((el) => (
+          ).map((el: any) => (
             <CardNotify
               key={el.id}
               createdAt={el.createdAt}
-              email={el.email}
+              customerNumber={el.customerNumber}
               model={el.model}
               status={el.status}
               id={el.id}

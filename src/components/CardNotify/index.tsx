@@ -1,17 +1,18 @@
 import styles from "../../styles/CardNotify.module.css";
+import { StatusProps } from "../../types";
 
 type props = {
-  email: string;
+  customerNumber: string;
   id: string;
   model: string;
   status: string;
   createdAt: string;
-  handleDelete: (data:string) => void;
+  handleDelete: (data: string) => void;
 };
 
 const CardNotify = ({
   id,
-  email,
+  customerNumber,
   model,
   status,
   createdAt,
@@ -24,13 +25,14 @@ const CardNotify = ({
       </div>
       <div className={styles.content}>
         <h5>
-          Email: <span>{email}</span>
+          Número de cliente: <span>{customerNumber}</span>
         </h5>
         <h5>
           Modelo: <span>{model}</span>
         </h5>
         <h5>
-          Status: <span>{status}</span>
+          Status:{" "}
+          <span>{status === StatusProps.PENDING ? "Pendiente" : ""}</span>
         </h5>
         <h5>
           Fecha de creación: <span>{new Date(createdAt).toLocaleString()}</span>

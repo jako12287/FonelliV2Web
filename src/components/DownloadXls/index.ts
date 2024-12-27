@@ -11,8 +11,7 @@ export const downloadExcel = (order: any) => {
 
     // Información General
     data.push({ Campo: "Información General", Valor: "" });
-    if (order.id) data.push({ Campo: "Orden ID", Valor: order.id });
-    if (order.customerNumber || order?.email)
+    if (order.customerNumber)
       data.push({
         Campo: "Usuario ID",
         Valor: `${order.customerNumber || ""} ${
@@ -49,9 +48,11 @@ export const downloadExcel = (order: any) => {
 
       if (totalCount > 0) {
         data.push({ Campo: "Iniciales", Valor: "" });
-        order.initialName.forEach((item: any) => {
-          data.push({ Campo: `  - ${item.name}`, Valor: item.count });
-        });
+        order.initialName
+          .filter((item: any) => item.count > 0) // Filtrar elementos con `count` > 0
+          .forEach((item: any) => {
+            data.push({ Campo: `  - ${item.name}`, Valor: item.count });
+          });
         data.push({ Campo: "", Valor: "" });
       }
     }
@@ -65,9 +66,11 @@ export const downloadExcel = (order: any) => {
 
       if (totalCount > 0) {
         data.push({ Campo: "Tallas", Valor: "" });
-        order.size.forEach((item: any) => {
-          data.push({ Campo: `  - ${item.name}`, Valor: item.count });
-        });
+        order.size
+          .filter((item: any) => item.count > 0) // Filtrar elementos con `count` > 0
+          .forEach((item: any) => {
+            data.push({ Campo: `  - ${item.name}`, Valor: item.count });
+          });
         data.push({ Campo: "", Valor: "" });
       }
     }
@@ -81,9 +84,11 @@ export const downloadExcel = (order: any) => {
 
       if (totalCount > 0) {
         data.push({ Campo: "Largos", Valor: "" });
-        order.long.forEach((item: any) => {
-          data.push({ Campo: `  - ${item.name}`, Valor: item.count });
-        });
+        order.long
+          .filter((item: any) => item.count > 0) // Filtrar elementos con `count` > 0
+          .forEach((item: any) => {
+            data.push({ Campo: `  - ${item.name}`, Valor: item.count });
+          });
         data.push({ Campo: "", Valor: "" });
       }
     }
@@ -97,9 +102,11 @@ export const downloadExcel = (order: any) => {
 
       if (totalCount > 0) {
         data.push({ Campo: "Nombres", Valor: "" });
-        order.name.forEach((item: any) => {
-          data.push({ Campo: `  - ${item.value}`, Valor: item.count });
-        });
+        order.name
+          .filter((item: any) => item.count > 0) // Filtrar elementos con `count` > 0
+          .forEach((item: any) => {
+            data.push({ Campo: `  - ${item.value}`, Valor: item.count });
+          });
         data.push({ Campo: "", Valor: "" });
       }
     }

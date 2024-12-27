@@ -53,12 +53,9 @@ export const downloadPDF = async (order: any) => {
 
     // Información General
     addSectionHeader("Información General:");
-    if (order.id) addNormalText(`Orden ID: ${order.id}`);
-    if (order.customerNumber || order?.email)
+    if (order.customerNumber)
       addNormalText(
-        `Usuario ID: ${order.customerNumber} ${
-          order.email ? "/ " + order.email : null
-        }`
+        `Usuario ID: ${order.customerNumber}`
       );
     if (order.model) addNormalText(`Modelo: ${order.model}`);
     if (order.caratage) addNormalText(`Kilataje: ${order.caratage}`);
@@ -86,15 +83,18 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-
+    
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Iniciales:");
-        order.initialName.forEach((item: any) =>
-          addNormalText(`* ${item.name}: ${item.count} Piezas`)
-        );
+        order.initialName
+          .filter((item: any) => item.count > 0) // Filtrar los elementos con `count` > 0
+          .forEach((item: any) =>
+            addNormalText(`* ${item.name}: ${item.count} Piezas`)
+          );
       }
     }
+    
 
     // Tallas
     if (order.size?.length) {
@@ -103,15 +103,18 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-
+    
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Tallas:");
-        order.size.forEach((item: any) =>
-          addNormalText(`* ${item.name}: ${item.count} Piezas`)
-        );
+        order.size
+          .filter((item: any) => item.count > 0) // Filtrar los elementos con `count` > 0
+          .forEach((item: any) =>
+            addNormalText(`* ${item.name}: ${item.count} Piezas`)
+          );
       }
     }
+    
 
     // Largos
     if (order?.long?.length) {
@@ -120,15 +123,18 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-
+    
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Largos:");
-        order.long.forEach((item: any) =>
-          addNormalText(`* ${item.name}: ${item.count} Piezas`)
-        );
+        order.long
+          .filter((item: any) => item.count > 0) // Filtrar los elementos con `count` > 0
+          .forEach((item: any) =>
+            addNormalText(`* ${item.name}: ${item.count} Piezas`)
+          );
       }
     }
+    
 
     // Nombres
     if (order?.name?.length) {
@@ -137,15 +143,18 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-
+    
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Nombres:");
-        order.name.forEach((item: any) =>
-          addNormalText(`* ${item.value}: ${item.count} Piezas`)
-        );
+        order.name
+          .filter((item: any) => item.count > 0) // Filtrar los elementos con `count` > 0
+          .forEach((item: any) =>
+            addNormalText(`* ${item.value}: ${item.count} Piezas`)
+          );
       }
     }
+    
 
     // Serializar el documento a un archivo PDF
     const pdfBytes = await pdfDoc.save();
