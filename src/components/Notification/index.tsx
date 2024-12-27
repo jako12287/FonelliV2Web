@@ -51,7 +51,8 @@ const Notification = () => {
       if (response?.errors) {
         response.errors.forEach((error: { email: string; message: string }) =>
           toast.error(`Email: ${error.email} - ${error.message}`, {
-            duration: 15000,
+            duration: 5000,
+            
           })
         );
       }

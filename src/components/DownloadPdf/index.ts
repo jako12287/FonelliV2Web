@@ -54,9 +54,8 @@ export const downloadPDF = async (order: any) => {
     // Información General
     addSectionHeader("Información General:");
     if (order.customerNumber)
-      addNormalText(
-        `Usuario ID: ${order.customerNumber}`
-      );
+      addNormalText(`Usuario ID: ${order.customerNumber}`);
+    if (order?.folio) addNormalText(`folio: ${order.folio}`);
     if (order.model) addNormalText(`Modelo: ${order.model}`);
     if (order.caratage) addNormalText(`Kilataje: ${order.caratage}`);
     if (order.color) addNormalText(`Color: ${order.color}`);
@@ -83,7 +82,7 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-    
+
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Iniciales:");
@@ -94,7 +93,6 @@ export const downloadPDF = async (order: any) => {
           );
       }
     }
-    
 
     // Tallas
     if (order.size?.length) {
@@ -103,7 +101,7 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-    
+
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Tallas:");
@@ -114,7 +112,6 @@ export const downloadPDF = async (order: any) => {
           );
       }
     }
-    
 
     // Largos
     if (order?.long?.length) {
@@ -123,7 +120,7 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-    
+
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Largos:");
@@ -134,7 +131,6 @@ export const downloadPDF = async (order: any) => {
           );
       }
     }
-    
 
     // Nombres
     if (order?.name?.length) {
@@ -143,7 +139,7 @@ export const downloadPDF = async (order: any) => {
         (sum: number, item: any) => sum + item.count,
         0
       );
-    
+
       // Si la suma es mayor que 0, renderizar el contenido
       if (totalCount > 0) {
         addSectionHeader("Nombres:");
@@ -154,7 +150,6 @@ export const downloadPDF = async (order: any) => {
           );
       }
     }
-    
 
     // Serializar el documento a un archivo PDF
     const pdfBytes = await pdfDoc.save();

@@ -18,6 +18,7 @@ export const downloadExcel = (order: any) => {
           order.email ? "/ " + order.email : ""
         }`,
       });
+    if (order?.folio) data.push({ Campo: "Folio", Valor: order.folio });
     if (order.model) data.push({ Campo: "Modelo", Valor: order.model });
     if (order.caratage) data.push({ Campo: "Kilataje", Valor: order.caratage });
     if (order.color) data.push({ Campo: "Color", Valor: order.color });
