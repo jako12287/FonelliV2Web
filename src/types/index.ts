@@ -51,6 +51,7 @@ export enum RoutesApi {
   TOKEN_NOTIFICATION = "/api/save-token",
   GET_NOTIFICATIONS = "/notifications",
   DELETE_NOTIFICATION = "/notification",
+  VERIFY_PASSWORD = "/verifyPassword",
 }
 
 export enum userType {

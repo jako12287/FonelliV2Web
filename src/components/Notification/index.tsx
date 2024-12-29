@@ -15,6 +15,7 @@ import { setRefetch } from "../../redux/slices/refecthUser";
 import toast from "react-hot-toast";
 import { setOpen } from "../../redux/slices/openModalNotify";
 import { RootState } from "../../redux/store";
+import FormChangePass from "../FormChangePass";
 
 const Notification = () => {
   const navigation = useNavigate();
@@ -24,6 +25,7 @@ const Notification = () => {
   );
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
+  const [showModalChangePass, setShowModalChangePass] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [isData, setData] = useState(false);
 
@@ -52,7 +54,6 @@ const Notification = () => {
         response.errors.forEach((error: { email: string; message: string }) =>
           toast.error(`Email: ${error.email} - ${error.message}`, {
             duration: 5000,
-            
           })
         );
       }
@@ -86,15 +87,21 @@ const Notification = () => {
   }, []);
 
   useEffect(() => {
-      if (refetchRealTime) {
-        getAll();
-        dispatch(setRefetch(false));
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refetchRealTime]);
+    if (refetchRealTime) {
+      getAll();
+      dispatch(setRefetch(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchRealTime]);
 
   return (
     <nav className={styles.container}>
+      <div
+        className={styles.textLogout}
+        onClick={() => setShowModalChangePass(true)}
+      >
+        Cambio de clave
+      </div>
       <div className={styles.textLogout} onClick={handleLogout}>
         Cerrar sesión
       </div>
@@ -136,12 +143,31 @@ const Notification = () => {
               className={stylesModal.inputFile}
             />
             <div className={stylesModal.modalActions}>
-              <button onClick={handleUpload} className={stylesModal.uploadButton}>
+              <button
+                onClick={handleUpload}
+                className={stylesModal.uploadButton}
+              >
                 Subir
               </button>
               <button
                 onClick={() => setShowModal(false)}
                 className={stylesModal.cancelButton}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showModalChangePass && (
+        <div className={stylesModal.modalOverlay}>
+          <div className={stylesModal.modal}>
+            <h3>Cambio de clave para usuario administrador</h3>
+            <FormChangePass setShowModalChangePass={setShowModalChangePass} />
+            <div className={stylesModal.modalActions}>
+              <button
+                className={stylesModal.cancelButton}
+                onClick={() => setShowModalChangePass(false)}
               >
                 Cancelar
               </button>

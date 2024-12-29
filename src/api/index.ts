@@ -279,11 +279,14 @@ export const LogoutAll = async (userId: string) => {
 
 export const getAllNotify = async () => {
   try {
-    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_NOTIFICATIONS}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URI}${RoutesApi.GET_NOTIFICATIONS}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return response.data.notifications;
   } catch (error) {
     console.log("Error en get notifications: ", error);
@@ -303,5 +306,28 @@ export const deleteNotification = async (notificationId: string) => {
     console.error("Error al eliminar la notificacion:", errorMessage);
 
     throw new Error(errorMessage);
+  }
+};
+
+export const verifyPassword = async (id: string, password: string) => {
+  if (!id || !password) {
+    console.error("El 'id' y 'password' son necesarios");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      `${BASE_URI}${RoutesApi.VERIFY_PASSWORD}`,
+      {
+        id,
+        password,
+      }
+    );
+
+    return response;
+  } catch (error: any) {
+    if (error?.status === 401) {
+      toast.error(error?.response?.data?.message);
+    }
   }
 };
