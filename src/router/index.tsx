@@ -12,6 +12,7 @@ const CustomerRegistration = lazy(
   () => import("../views/CustomerRegistration")
 );
 const NotFound = lazy(() => import("../views/NoFound"));
+const Policy = lazy(() => import("../views/Policy"));
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -121,6 +122,13 @@ const Router: RouteObject[] = [
         </Layout>
       </ProtectedRoute>
       // </ProtectedRoute>
+    ),
+  },
+  {
+    id: "policy",
+    path: "/policy",
+    element: (
+        <Policy />
     ),
   },
   {
