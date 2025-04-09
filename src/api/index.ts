@@ -23,6 +23,11 @@ type PropsChangePass = {
   newPassword: string;
 };
 
+interface GetAllUserParams {
+  limit?: number;
+  startAfter?: number;
+}
+
 export const loginApi = async ({ email, password }: PropsCredential) => {
   try {
     const response = await axios.post(
@@ -69,16 +74,30 @@ export const changePassword = async ({ _id, newPassword }: PropsChangePass) => {
   }
 };
 
-export const getAllUser = async () => {
+export const getAllUser = async ({ limit = 100, startAfter }: GetAllUserParams = {}) => {
   try {
-    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_ALL_USERS}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
+    const queryParams = new URLSearchParams();
+
+    if (limit) queryParams.append("limit", String(limit));
+    if (startAfter !== undefined) queryParams.append("startAfter", String(startAfter));
+
+    const response = await axios.get(
+      `${BASE_URI}${RoutesApi.GET_ALL_USERS}?${queryParams.toString()}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // Siempre devolvemos un objeto con users al menos vacío
+    return {
+      users: response.data?.users || [],
+      nextPageToken: response.data?.nextPageToken,
+    };
   } catch (error) {
-    console.log("Error en get user: ", error);
+    console.error("Error en get user: ", error);
+    return { users: [] }; // manejamos el error devolviendo objeto consistente
   }
 };
 

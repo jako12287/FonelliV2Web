@@ -21,16 +21,33 @@ const CustomerRegistration = () => {
 
   const fetchUsers = async () => {
     try {
-      const result = await getAllUser();
-      const filteredData = result.filter(
-        ({ type }: DataPropsUser) => type !== userType.ADMIN
-      );
-      setAllUsers(filteredData);
-      setFilteredUsers(filteredData);
+      let allFetchedUsers: DataPropsUser[] = [];
+      let startAfter: number | undefined = undefined;
+      let hasMore = true;
+  
+      while (hasMore) {
+        const result = await getAllUser({ limit: 100, startAfter });
+  
+        const filteredData = result.users.filter(
+          ({ type }: DataPropsUser) => type !== userType.ADMIN
+        );
+  
+        allFetchedUsers = [...allFetchedUsers, ...filteredData];
+  
+        if (result.nextPageToken !== undefined) {
+          startAfter = result.nextPageToken;
+        } else {
+          hasMore = false;
+        }
+      }
+  
+      setAllUsers(allFetchedUsers);
+      setFilteredUsers(allFetchedUsers);
     } catch (error) {
       console.error("Error al cargar los usuarios:", error);
     }
   };
+  
 
   const handleDelete = async (_id: string) => {
     const userlocal = JSON.parse(localStorage.getItem("@USER") as string);
