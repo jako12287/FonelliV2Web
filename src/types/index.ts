@@ -16,6 +16,7 @@ export type DataPropsUser = {
   email?: string;
   orders?: any;
   verify?: boolean;
+  customerNumber?: string | number;
 };
 
 export interface DataTableUser {

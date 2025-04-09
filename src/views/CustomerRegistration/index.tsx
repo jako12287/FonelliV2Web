@@ -11,7 +11,13 @@ import toast from "react-hot-toast";
 const CustomerRegistration = () => {
   const dispatch = useDispatch();
   const refetch = useSelector((state: RootState) => state.refetchUser.refetch);
-  const [dataUser, setDataUser] = useState<DataPropsUser[]>([]);
+  const [allUsers, setAllUsers] = useState<DataPropsUser[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<DataPropsUser[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPerpage, setCurrentPerPage] = useState<number>(5);
+  const [searchCustomer, setSearchCustomer] = useState<string>("");
+
+  const itemsPerPage = currentPerpage;
 
   const fetchUsers = async () => {
     try {
@@ -19,7 +25,8 @@ const CustomerRegistration = () => {
       const filteredData = result.filter(
         ({ type }: DataPropsUser) => type !== userType.ADMIN
       );
-      setDataUser(filteredData);
+      setAllUsers(filteredData);
+      setFilteredUsers(filteredData);
     } catch (error) {
       console.error("Error al cargar los usuarios:", error);
     }
@@ -33,6 +40,7 @@ const CustomerRegistration = () => {
         duration: 5000,
       });
     }
+
     try {
       const isConfirmed = window.confirm(
         "¿Estás seguro de que deseas eliminar este usuario?"
@@ -41,7 +49,6 @@ const CustomerRegistration = () => {
 
       await deleteUser(_id);
       alert("Usuario eliminado con éxito");
-
       fetchUsers();
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
@@ -60,10 +67,48 @@ const CustomerRegistration = () => {
     }
   }, [refetch]);
 
+  useEffect(() => {
+    const search = searchCustomer.trim().toLowerCase();
+    if (search === "") {
+      setFilteredUsers(allUsers);
+    } else {
+      const filtered = allUsers.filter((user) => {
+        const customerMatch = user?.customerNumber
+          ?.toString()
+          .toLowerCase()
+          .includes(search);
+        const emailMatch = user?.email?.toLowerCase().includes(search);
+        return customerMatch || emailMatch;
+      });
+      setFilteredUsers(filtered);
+    }
+    setCurrentPage(1); // Reseteamos la página cuando se busca
+  }, [searchCustomer, allUsers]);
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const currentData = filteredUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.containerTable}>
-        <TableData data={dataUser} handleDelete={handleDelete} />
+        <TableData
+          data={currentData}
+          handleDelete={handleDelete}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          setCurrentPerPage={setCurrentPerPage}
+          setSearchCustomer={setSearchCustomer}
+        />
       </div>
     </div>
   );

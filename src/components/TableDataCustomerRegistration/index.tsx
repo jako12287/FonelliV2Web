@@ -5,9 +5,24 @@ import { useNavigate } from "react-router-dom";
 import { FC, useEffect, useState } from "react";
 import { DataTableUser, userType } from "../../types";
 
-const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
-  const navigator = useNavigate();
+interface Props extends DataTableUser {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  setCurrentPerPage: (data: number) => void;
+  setSearchCustomer: (data:string)=>void
+}
 
+const TableData: FC<Props> = ({
+  data,
+  handleDelete,
+  currentPage,
+  totalPages,
+  onPageChange,
+  setCurrentPerPage,
+  setSearchCustomer,
+}) => {
+  const navigator = useNavigate();
   const [filteredData, setFilteredData] = useState<any[]>(data);
 
   useEffect(() => {
@@ -17,22 +32,23 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
   const sortedData = [...filteredData].sort((a: any, b: any) => {
     const dateA = new Date(a.createdAt).getTime();
     const dateB = new Date(b.createdAt).getTime();
-    return dateB - dateA; // Más reciente primero
+    return dateB - dateA;
   });
 
-  const handleFilter = (dataOption: any) => {
-    if (dataOption.target.value === userType.CUSTOMER) {
+  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+
+    if (value === userType.CUSTOMER) {
       const dataFilter = data.filter(
         (el: any) => el.type === userType.CUSTOMER
       );
       setFilteredData(dataFilter);
-    } else if (dataOption.target.value === userType.COLLABORATOR) {
+    } else if (value === userType.COLLABORATOR) {
       const dataFilter = data.filter(
         (el: any) => el.type === userType.COLLABORATOR
       );
       setFilteredData(dataFilter);
     } else {
-      // Si es "TODOS", mostramos todos los datos
       setFilteredData(data);
     }
   };
@@ -41,30 +57,85 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
     <div className={styles.tableContainer}>
       <div
         style={{
-          marginBottom: "1rem",
           display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          width: "20rem",
-          fontFamily: "Poppins",
-          fontWeight: "400",
-          color: "#183E6F",
+          justifyContent: "space-between",
         }}
       >
-        <h3>Filtro por tipo de cuenta : </h3>
-        <select
-          onChange={handleFilter}
+        <div
           style={{
+            marginBottom: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            width: "20rem",
             fontFamily: "Poppins",
             fontWeight: "400",
             color: "#183E6F",
           }}
         >
-          <option value={"TODOS"}>Todos</option>
-          <option value={userType.CUSTOMER}>Clientes</option>
-          <option value={userType.COLLABORATOR}>Colaboradores</option>
-        </select>
+          <h3>Filtro por tipo de cuenta:</h3>
+          <select
+            onChange={handleFilter}
+            style={{
+              fontFamily: "Poppins",
+              fontWeight: "400",
+              color: "#183E6F",
+            }}
+          >
+            <option value={"TODOS"}>Todos</option>
+            <option value={userType.CUSTOMER}>Clientes</option>
+            <option value={userType.COLLABORATOR}>Colaboradores</option>
+          </select>
+        </div>
+
+        <div
+          style={{
+            marginBottom: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            width: "20rem",
+            fontFamily: "Poppins",
+            fontWeight: "400",
+            color: "#183E6F",
+          }}
+        >
+          <h3>Buscar por número de cliente:</h3>
+          <input type="text" style={{
+            borderRadius:"1rem",
+            padding:"1px 5px 1px 5px"
+            }} onChange={(e)=>setSearchCustomer(String(e.target.value))}/>
+        </div>
+
+        <div
+          style={{
+            marginBottom: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            width: "20rem",
+            fontFamily: "Poppins",
+            fontWeight: "400",
+            color: "#183E6F",
+          }}
+        >
+          <h3>Clientes por página:</h3>
+          <select
+            onChange={(e) => setCurrentPerPage(Number(e.target.value))}
+            style={{
+              fontFamily: "Poppins",
+              fontWeight: "400",
+              color: "#183E6F",
+            }}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
       </div>
+
       <table className={styles.customTable}>
         <thead>
           <tr>
@@ -85,7 +156,13 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
                   ? item.email || item.id
                   : item.id}
               </td>
-              <td style={{color: item.changePass === 1 ? "#ffb2db" : "#000"}}>{item.verify ? "Clave personalizada" : item.password}</td>
+              <td
+                style={{
+                  color: item.changePass === 1 ? "#ffb2db" : "#000",
+                }}
+              >
+                {item.verify ? "Clave personalizada" : item.password}
+              </td>
               <td>
                 {item.type === userType.COLLABORATOR
                   ? "Colaborador"
@@ -113,6 +190,26 @@ const TableData: FC<DataTableUser> = ({ data, handleDelete }) => {
           ))}
         </tbody>
       </table>
+
+      <div className={styles.pagination}>
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={styles.pageButton}
+        >
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={styles.pageButton}
+        >
+          Siguiente
+        </button>
+      </div>
     </div>
   );
 };

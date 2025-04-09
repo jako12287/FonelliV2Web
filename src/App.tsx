@@ -10,7 +10,6 @@ import { registerServiceWorker } from "./api/firebaseConfig";
 function App() {
   registerServiceWorker();
   // registerOnMessageListener();
-  console.log(",");
 
   return (
     <Provider store={store}>
