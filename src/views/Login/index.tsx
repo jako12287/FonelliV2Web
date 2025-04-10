@@ -73,6 +73,17 @@ const Login = () => {
         );
         return;
       }
+
+      if (result?.user?.sessionActive) {
+        const confirmSession = window.confirm(
+          "Tu cuenta tiene una sesión activa en otro dispositivo. ¿Deseas iniciar sesión aquí y cerrar la otra sesión?"
+        );
+        if (!confirmSession) {
+          setIsLoading(false);
+          return;
+        }
+      }
+
       if (result?.token) {
         dispatch(login(result) as never);
         if (

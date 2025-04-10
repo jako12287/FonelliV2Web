@@ -40,6 +40,7 @@ export const loginApi = async ({ email, password }: PropsCredential) => {
       }
     );
 
+		console.log("TCL: loginApi -> response.data", response)
     return response.data;
   } catch (error: any) {
     console.log(
