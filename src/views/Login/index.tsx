@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
 import {
   loginApi,
+  LogoutAll,
   // saveTokenToDatabase
 } from "../../api";
 import toast from "react-hot-toast";
@@ -51,29 +52,34 @@ const Login = () => {
   const onSubmit: SubmitHandler<PropsForm> = async (data) => {
     localStorage.clear();
     setIsLoading(true);
+  
     const dataSend = {
       email: data.email.toLowerCase(),
       password: data.password,
     };
+  
     try {
-      const result = await loginApi(dataSend);
-
+      let result = await loginApi(dataSend); // Primer intento de login
+  
       if (
         result.message === "Revisa las credenciales." ||
         result.message === "Contraseña incorrecta."
       ) {
         toast.error("Revisa las credenciales", { duration: 5000 });
+        setIsLoading(false);
         return;
       }
-
+  
       if (result?.user?.type === userType.CUSTOMER) {
         toast.error(
           "Tu cuenta no tiene acceso. Si crees que esto es un error, por favor contacta a soporte",
           { duration: 5000 }
         );
+        setIsLoading(false);
         return;
       }
-
+  
+      // Si ya hay sesión activa en otro dispositivo
       if (result?.user?.sessionActive) {
         const confirmSession = window.confirm(
           "Tu cuenta tiene una sesión activa en otro dispositivo. ¿Deseas iniciar sesión aquí y cerrar la otra sesión?"
@@ -82,10 +88,19 @@ const Login = () => {
           setIsLoading(false);
           return;
         }
+  
+        // Cerrar la sesión anterior
+        await LogoutAll(result?.user?._id);
+  
+        // Hacer login de nuevo para obtener token nuevo válido
+        result = await loginApi(dataSend);
       }
-
+  
+      // Si hay token válido, continuar flujo
       if (result?.token) {
         dispatch(login(result) as never);
+  
+        // Si necesita cambiar la contraseña
         if (
           !result?.user?.verify &&
           result?.user?._id &&
@@ -95,8 +110,11 @@ const Login = () => {
           navigation(`/changePassword/${result?.user?._id}`);
           return;
         }
+  
+        // Activar notificaciones
         await requestPermission(result?.user?._id);
-
+  
+        // Ir al home
         navigation("/home");
       }
     } catch (error) {
@@ -105,6 +123,7 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <section className={style.container}>

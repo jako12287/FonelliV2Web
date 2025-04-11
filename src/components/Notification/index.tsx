@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { setOpen } from "../../redux/slices/openModalNotify";
 import { RootState } from "../../redux/store";
 import FormChangePass from "../FormChangePass";
+import Loader from "../Loader";
 
 const Notification = () => {
   const navigation = useNavigate();
@@ -28,6 +29,7 @@ const Notification = () => {
   const [showModalChangePass, setShowModalChangePass] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [isData, setData] = useState(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   // Manejo de logout
   const handleLogout = async () => {
@@ -48,6 +50,8 @@ const Notification = () => {
       return;
     }
 
+    setIsUploading(true);
+
     try {
       const response = await registerMassive(file);
       if (response?.errors) {
@@ -61,9 +65,12 @@ const Notification = () => {
       toast.success("Carga masiva realizada con éxito.", { duration: 5000 });
       dispatch(setRefetch(true));
       setShowModal(false);
+      setFile(null);
     } catch (error) {
       console.error("Error al cargar usuarios:", error);
       alert("Hubo un error al intentar cargar los usuarios.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -146,9 +153,11 @@ const Notification = () => {
               <button
                 onClick={handleUpload}
                 className={stylesModal.uploadButton}
+                disabled={isUploading}
               >
-                Subir
+                {isUploading ? "Subiendo..." : "Subir"}
               </button>
+              {isUploading && <Loader/>}
               <button
                 onClick={() => setShowModal(false)}
                 className={stylesModal.cancelButton}

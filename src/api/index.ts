@@ -2,7 +2,8 @@ import axios from "axios";
 import { RoutesApi } from "../types";
 import toast from "react-hot-toast";
 
-const BASE_URI = "https://fonellibackend.onrender.com"; //fonelli client
+const BASE_URI = "https://fonellibackend.onrender.com";
+//fonelli client
 // const BASE_URI = 'https://fonelllibackenfirebase.onrender.com';
 // const BASE_URI = "http://localhost:3000";
 
@@ -40,7 +41,6 @@ export const loginApi = async ({ email, password }: PropsCredential) => {
       }
     );
 
-		console.log("TCL: loginApi -> response.data", response)
     return response.data;
   } catch (error: any) {
     console.log(
@@ -75,40 +75,58 @@ export const changePassword = async ({ _id, newPassword }: PropsChangePass) => {
   }
 };
 
-export const getAllUser = async ({ limit = 100, startAfter }: GetAllUserParams = {}) => {
+
+
+export const getAllUser = async ({
+  limit = 100,
+  startAfter,
+}: GetAllUserParams = {}) => {
   try {
     const queryParams = new URLSearchParams();
 
     if (limit) queryParams.append("limit", String(limit));
-    if (startAfter !== undefined) queryParams.append("startAfter", String(startAfter));
+    if (startAfter !== undefined)
+      queryParams.append("startAfter", String(startAfter));
+
+    const token = localStorage.getItem("@TOKEN");
 
     const response = await axios.get(
       `${BASE_URI}${RoutesApi.GET_ALL_USERS}?${queryParams.toString()}`,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    // Siempre devolvemos un objeto con users al menos vacío
     return {
       users: response.data?.users || [],
       nextPageToken: response.data?.nextPageToken,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error en get user: ", error);
-    return { users: [] }; // manejamos el error devolviendo objeto consistente
+
+    if (error.response?.status === 401) {
+      localStorage.clear();
+      window.location.href = "/login"; // Redirige al login
+    }
+
+    return { users: [] };
   }
 };
 
+
 export const getUserById = async (_id: string) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const response = await axios.get(
       `${BASE_URI}${RoutesApi.GET_USER_BY_ID}/${_id}`,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -120,9 +138,11 @@ export const getUserById = async (_id: string) => {
 
 export const deleteUser = async (_id: string) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
     const response = await axios.delete(`${BASE_URI}${RoutesApi.DELETE_USER}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       data: { _id },
     });
@@ -134,6 +154,8 @@ export const deleteUser = async (_id: string) => {
 
 export const registerMassive = async (file: File) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const formData = new FormData();
     formData.append("file", file);
     const response = await axios.post(
@@ -142,6 +164,7 @@ export const registerMassive = async (file: File) => {
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -153,12 +176,14 @@ export const registerMassive = async (file: File) => {
 
 export const registerUser = async (data: any) => {
   try {
+    const token = localStorage.getItem('@TOKEN')
     const response = await axios.post(
       `${BASE_URI}${RoutesApi.REGISTER_USER}`,
       data,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization:`Bearer ${token}`
         },
       }
     );
@@ -171,12 +196,14 @@ export const registerUser = async (data: any) => {
 
 export const editUser = async (data: any) => {
   try {
+    const token = localStorage.getItem('@TOKEN')
     const response = await axios.put(
       `${BASE_URI}${RoutesApi.EDIT_USER}`,
       data,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
       }
     );
@@ -188,22 +215,48 @@ export const editUser = async (data: any) => {
 
 export const getAllOrders = async () => {
   try {
-    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_ALL_ORDER}`);
-    return response.data.orders; // Devolver las órdenes
-  } catch (error) {
+    const token = localStorage.getItem("@TOKEN");
+    const response = await axios.get(`${BASE_URI}${RoutesApi.GET_ALL_ORDER}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data.orders;
+  } catch (error: any) {
     console.error("Error al obtener las órdenes:", error);
+
+    if (error?.response?.status === 401) {
+      // Limpiar cualquier posible sesión local
+      localStorage.clear();
+      // Redirigir al login
+      window.location.href = "/login";
+      return;
+    }
+
     throw new Error("No se pudieron obtener las órdenes");
   }
 };
+
+
 
 export const changeStatusAdmin = async (
   orderId: string,
   statusAdmin: string
 ) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const response = await axios.put(
       `${BASE_URI}${RoutesApi.EDIT_STATUS_ADMIN}/${orderId}`,
-      { statusAdmin }
+      { statusAdmin },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
 
     return response.data;
@@ -216,11 +269,21 @@ export const changeStatusAdmin = async (
   }
 };
 
+
 export const deleteOrder = async (orderId: string) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const response = await axios.delete(
-      `${BASE_URI}${RoutesApi.DELETE_ORDER}/${orderId}`
+      `${BASE_URI}${RoutesApi.DELETE_ORDER}/${orderId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
+
     return response.data;
   } catch (error: any) {
     const errorMessage =
@@ -232,14 +295,18 @@ export const deleteOrder = async (orderId: string) => {
   }
 };
 
+
 export const addFolio = async (orderId: string, folio: string) => {
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const response = await axios.put(
       `${BASE_URI}${RoutesApi.ADD_FOLIO}/${orderId}`,
       { folio },
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -253,6 +320,7 @@ export const addFolio = async (orderId: string, folio: string) => {
     throw new Error("No se pudo agregar el folio.");
   }
 };
+
 
 export const saveTokenToDatabase = async (userId: any, token: any) => {
   try {
@@ -336,18 +404,29 @@ export const verifyPassword = async (id: string, password: string) => {
   }
 
   try {
+    const token = localStorage.getItem("@TOKEN");
+
     const response = await axios.post(
       `${BASE_URI}${RoutesApi.VERIFY_PASSWORD}`,
       {
         id,
         password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
     return response;
   } catch (error: any) {
-    if (error?.status === 401) {
+    if (error?.response?.status === 401) {
       toast.error(error?.response?.data?.message);
+    } else {
+      console.error("Error en verifyPassword:", error);
     }
   }
 };
+
