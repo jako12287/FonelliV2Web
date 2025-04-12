@@ -157,7 +157,7 @@ const Notification = () => {
               >
                 {isUploading ? "Subiendo..." : "Subir"}
               </button>
-              {isUploading && <Loader/>}
+              {isUploading && <Loader text="No cierre el modal o se interrumpirá la carga."/>}
               <button
                 onClick={() => setShowModal(false)}
                 className={stylesModal.cancelButton}
